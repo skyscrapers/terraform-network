@@ -1,3 +1,8 @@
 # Compiled files
+.DS_Store
+.DS_Store?
+*.tfvars
+.terraform/
 *.tfstate
 *.tfstate.backup
+~
