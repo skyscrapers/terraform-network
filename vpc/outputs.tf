@@ -1,9 +1,11 @@
 output "vpc_id" {
   value = "${aws_vpc.main.id}"
 }
-
-output "public_subnets" {
-  value = "${module.public_subnets.ids}"
+output "public_nat-bastion" {
+  value = "${module.public_nat-bastion_subnets.ids}"
+}
+output "public_lb_subnets" {
+  value = "${module.public_lb_subnets.ids}"
 }
 
 output "app_subnets" {

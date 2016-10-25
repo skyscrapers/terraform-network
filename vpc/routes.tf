@@ -1,4 +1,4 @@
-# Create bastion route table
+# Create public_nat-bastion route table
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.main.id}"
 
@@ -14,15 +14,14 @@ resource "aws_route_table" "public" {
   }
 }
 
-# Associate route table to bastion subnets
-resource "aws_route_table_association" "public_hosts" {
-  count          = "${var.amount_public_subnets}"
-  subnet_id      = "${element(module.public_subnets.ids, count.index)}"
+resource "aws_route_table_association" "public_lb_hosts" {
+  count          = "${var.amount_public_lb_subnets}"
+  subnet_id      = "${element(module.public_lb_subnets.ids, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
-resource "aws_route_table_association" "bastion_hosts" {
-  count          = "${var.amount_bastion_subnets}"
-  subnet_id      = "${element(module.bastion_subnets.ids, count.index)}"
+resource "aws_route_table_association" "public_nat-bastion_hosts" {
+  count          = "${var.amount_public_nat-bastion_subnets}"
+  subnet_id      = "${element(module.public_nat-bastion_subnets.ids, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
 # Create route table
