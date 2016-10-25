@@ -11,13 +11,6 @@ resource "aws_security_group" "sg" {
     cidr_blocks = ["${var.cidr_block}"]
   }
 
-  ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    security_groups = ["${aws_security_group.bastion_sg.id}"]
-  }
-
   # Allow incoming NRPE check from icinga2
   ingress {
     from_port   = 5666

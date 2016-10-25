@@ -18,10 +18,6 @@ output "base_sg" {
   value = "${aws_security_group.sg.id}"
 }
 
-output "bastion_sg" {
-  value = "${aws_security_group.bastion_sg.id}"
-}
-
 output "private_rts" {
   value = ["${aws_route_table.private.*.id}"]
 }
