@@ -11,12 +11,23 @@ resource "aws_vpc" "main" {
   }
 }
 
+module "bastion_subnets" {
+  source             = "../subnets"
+  num_subnets        = "${var.amount_bastion_subnets}"
+  name               = "bastion"
+  cidr               = "${var.cidr_block}"
+  netnum             = "${var.netnum_bastion}"
+  vpc_id             = "${aws_vpc.main.id}"
+  environment        = "${var.environment}"
+  project            = "${var.project}"
+}
+
 module "public_subnets" {
   source             = "../subnets"
   num_subnets        = "${var.amount_public_subnets}"
   name               = "public"
   cidr               = "${var.cidr_block}"
-  netnum             = 0
+  netnum             = "${var.netnum_public}"
   vpc_id             = "${aws_vpc.main.id}"
   environment        = "${var.environment}"
   project            = "${var.project}"
@@ -27,7 +38,7 @@ module "app_subnets" {
   num_subnets = "${var.amount_app_subnets}"
   name        = "app"
   cidr        = "${var.cidr_block}"
-  netnum      = 10
+  netnum      = "${var.netnum_app}"
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"
@@ -38,7 +49,7 @@ module "db_subnets" {
   num_subnets = "${var.amount_db_subnets}"
   name        = "db"
   cidr        = "${var.cidr_block}"
-  netnum      = 20
+  netnum      = "${var.netnum_db}"
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"

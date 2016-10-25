@@ -61,12 +61,17 @@ It will also create the required route tables for the private subnets. The app a
 
 ### Available variables:
  * [`cidr_block`]: String(required): the CIDR of the new VPC
+ * [`amount_bastion_subnets`]: String(optional): default to 3. the amount of bastion subnets required
  * [`amount_public_subnets`]: String(optional): default to 3. the amount of public subnets required
  * [`amount_app_subnets`]: String(optional): default to 3. the amount of app subnets required
- * [`amount_app_subnets`]: String(optional): default to 3. the amount of db subnets required
+ * [`amount_db_subnets`]: String(optional): default to 3. the amount of db subnets required
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
  * [`project`]: String(required): the name of the project these subnets belong to
  * [`number_private_rt`]: String(optional): default to 1. the desired number of private route tables. In case we want one per AZ we can change this value.
+ * [`netnum_bastion`]: String(optional): default to 0. First number of subnet to start of for bastion subnets
+ * [`netnum_public`]: String(optional): default to 10. First number of subnet to start of for public subnets
+ * [`netnum_app`]: String(optional): default to 20. First number of subnet to start of for app subnets
+ * [`netnum_db`]: String(optional): default to 30. First number of subnet to start of for db subnets
 
 ### Output:
  * [`vpc_id`]: String: the id of the vpc created
