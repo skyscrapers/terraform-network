@@ -16,7 +16,7 @@ Creates a nat gateway and automatically adds a route table to the route tables p
   module "nat_gateway" {
     source = "nat_gateway"
     private_route_tables="${module.vpc.private_rts}"
-    public_lb_subnets="${module.vpc.public_lb_subnets}"
+    public_subnets="${module.vpc.public_subnets}"
   }
   ```
 ## Subnets
@@ -52,7 +52,7 @@ module "public_lb_subnets" {
 }
 ```
 ## vpc
-This module will create a vpc with the option to specify 3 types of subnets:
+This module will create a vpc with the option to specify 4 types of subnets:
  - public_nat-bastion_subnets
  - public_lb_subnets
  - private_app_subnets
