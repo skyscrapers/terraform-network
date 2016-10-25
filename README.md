@@ -37,7 +37,7 @@ This module will create a vpc with the option to specify 3 types of subnets:
  - public_subnets
  - db_subnets
 
-It will also create the required route tables for the private subnets and a basic security group. The app and db subnets are private subnets.
+It will also create the required route tables for the private subnets. The app and db subnets are private subnets.
 
 ### Available variables:
  * [`aws_region`]: String(optional): default to eu-west-1
@@ -48,8 +48,6 @@ It will also create the required route tables for the private subnets and a basi
  * [`amount_app_subnets`]: String(optional): default to 3. the amount of db subnets required
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
  * [`project`]: String(required): the name of the project these subnets belong to
- * [`icinga_ip`]: String(optional): default to our icinga server. the IP address of the icinga server
- * [`puppetmaster_ip`]: String(optional): default to our puppetmaster ip. the IP address of the puppetmaster server
  * [`number_private_rt`]: String(optional): default to 1. the desired number of private route tables. In case we want one per AZ we can change this value.
 
 ### Output:

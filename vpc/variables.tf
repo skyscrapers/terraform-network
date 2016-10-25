@@ -34,14 +34,6 @@ variable "project" {
   description = "The current project"
 }
 
-variable "icinga_ip" {
-  default = "52.18.75.113/32"
-}
-
-variable "puppetmaster_ip" {
-  default = "176.58.117.244/32"
-}
-
 variable "number_private_rt" {
   default = "1"
 }

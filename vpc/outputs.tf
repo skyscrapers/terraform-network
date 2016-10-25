@@ -14,10 +14,6 @@ output "db_subnets" {
   value = "${module.db_subnets.ids}"
 }
 
-output "base_sg" {
-  value = "${aws_security_group.sg.id}"
-}
-
 output "private_rts" {
   value = ["${aws_route_table.private.*.id}"]
 }
