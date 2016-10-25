@@ -2,12 +2,12 @@ variable "cidr_block" {
   description = "CIDR block you want to have in your VPC"
 }
 
-variable "amount_bastion_subnets" {
+variable "amount_public_nat-bastion_subnets" {
   description = "Amount of subnets you need"
   default     = "1"
 }
 
-variable "amount_public_subnets" {
+variable "amount_public_lb_subnets" {
   description = "Amount of subnets you need"
   default     = "3"
 }
@@ -34,7 +34,7 @@ variable "project" {
 variable "number_private_rt" {
   default = "1"
 }
-variable "netnum_public" {
+variable "netnum_public_lb" {
   default = "10"
 }
 variable "netnum_app" {
@@ -43,6 +43,6 @@ variable "netnum_app" {
 variable "netnum_db" {
   default = "30"
 }
-variable "netnum_bastion" {
+variable "netnum_public_nat-bastion" {
   default = "0"
 }

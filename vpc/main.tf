@@ -11,23 +11,23 @@ resource "aws_vpc" "main" {
   }
 }
 
-module "bastion_subnets" {
+module "public_nat-bastion_subnets" {
   source             = "../subnets"
-  num_subnets        = "${var.amount_bastion_subnets}"
-  name               = "bastion"
+  num_subnets        = "${var.amount_public_nat-bastion_subnets}"
+  name               = "public_nat-bastion"
   cidr               = "${var.cidr_block}"
-  netnum             = "${var.netnum_bastion}"
+  netnum             = "${var.netnum_public_nat-bastion}"
   vpc_id             = "${aws_vpc.main.id}"
   environment        = "${var.environment}"
   project            = "${var.project}"
 }
 
-module "public_subnets" {
+module "public_lb_subnets" {
   source             = "../subnets"
-  num_subnets        = "${var.amount_public_subnets}"
-  name               = "public"
+  num_subnets        = "${var.amount_public_lb_subnets}"
+  name               = "public_lb"
   cidr               = "${var.cidr_block}"
-  netnum             = "${var.netnum_public}"
+  netnum             = "${var.netnum_public_lb}"
   vpc_id             = "${aws_vpc.main.id}"
   environment        = "${var.environment}"
   project            = "${var.project}"
