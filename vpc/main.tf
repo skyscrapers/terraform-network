@@ -33,23 +33,23 @@ module "public_lb_subnets" {
   project            = "${var.project}"
 }
 
-module "app_subnets" {
+module "private_app_subnets" {
   source      = "../subnets"
-  num_subnets = "${var.amount_app_subnets}"
-  name        = "app"
+  num_subnets = "${var.amount_private_app_subnets}"
+  name        = "private_app"
   cidr        = "${var.cidr_block}"
-  netnum      = "${var.netnum_app}"
+  netnum      = "${var.netnum_private_app}"
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"
 }
 
-module "db_subnets" {
+module "private_db_subnets" {
   source      = "../subnets"
-  num_subnets = "${var.amount_db_subnets}"
-  name        = "db"
+  num_subnets = "${var.amount_private_db_subnets}"
+  name        = "private_db"
   cidr        = "${var.cidr_block}"
-  netnum      = "${var.netnum_db}"
+  netnum      = "${var.netnum_private_db}"
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"

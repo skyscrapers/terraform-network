@@ -8,12 +8,12 @@ output "public_lb_subnets" {
   value = "${module.public_lb_subnets.ids}"
 }
 
-output "app_subnets" {
-  value = "${module.app_subnets.ids}"
+output "private_app_subnets" {
+  value = "${module.private_app_subnets.ids}"
 }
 
-output "db_subnets" {
-  value = "${module.db_subnets.ids}"
+output "private_db_subnets" {
+  value = "${module.private_db_subnets.ids}"
 }
 
 output "private_rts" {

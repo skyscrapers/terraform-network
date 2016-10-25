@@ -7,7 +7,7 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 ### Available variables:
  * [`private_route_tables`]: List(required): List of private route tables that require the nat gateway [NOTE the number of nat gateways should match the number of private routes]
  * [`number_nat_gateways`]: String(optional):  Number of nat gateways required
- * [`public_lb_subnets`]: List(required): The subnets where we are going to create/deploy the NAT gateways
+ * [`public_subnets`]: List(required): The subnets where we are going to create/deploy the NAT gateways
 ### Output
  * [`ids`]: List: The ids of the nat gateways created.
 
@@ -53,32 +53,33 @@ module "public_lb_subnets" {
 ```
 ## vpc
 This module will create a vpc with the option to specify 3 types of subnets:
- - app_subnets
+ - public_nat-bastion_subnets
  - public_lb_subnets
- - db_subnets
+ - private_app_subnets
+ - private_db_subnets
 
-It will also create the required route tables for the private subnets. The app and db subnets are private subnets.
+It will also create the required route tables for the private subnets. The private_app and private_db subnets are private subnets.
 
 ### Available variables:
  * [`cidr_block`]: String(required): the CIDR of the new VPC
  * [`amount_public_nat-bastion_subnets`]: String(optional): default to 3. the amount of public_nat-bastion subnets required
  * [`amount_public_lb_subnets`]: String(optional): default to 3. the amount of public_lb subnets required
- * [`amount_app_subnets`]: String(optional): default to 3. the amount of app subnets required
- * [`amount_db_subnets`]: String(optional): default to 3. the amount of db subnets required
+ * [`amount_private_app_subnets`]: String(optional): default to 3. the amount of private_app subnets required
+ * [`amount_private_db_subnets`]: String(optional): default to 3. the amount of private_db subnets required
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
  * [`project`]: String(required): the name of the project these subnets belong to
  * [`number_private_rt`]: String(optional): default to 1. the desired number of private route tables. In case we want one per AZ we can change this value.
  * [`netnum_public_nat-bastion`]: String(optional): default to 0. First number of subnet to start of for public_nat-bastion subnets
  * [`netnum_public_lb`]: String(optional): default to 10. First number of subnet to start of for public_lb subnets
- * [`netnum_app`]: String(optional): default to 20. First number of subnet to start of for app subnets
- * [`netnum_db`]: String(optional): default to 30. First number of subnet to start of for db subnets
+ * [`netnum_private_app`]: String(optional): default to 20. First number of subnet to start of for private_app subnets
+ * [`netnum_private_db`]: String(optional): default to 30. First number of subnet to start of for private_db subnets
 
 ### Output:
  * [`vpc_id`]: String: the id of the vpc created
  * [`public_nat-bastion`]: List: list of the public_nat-bastion subnets id created
  * [`public_lb_subnets`]: List: list of the public_lb subnets id created
- * [`app_subnets`]: List: list of the app subnets id created
- * [`db_subnets`]: List: list of the db subnets id created
+ * [`private_app_subnets`]: List: list of the private_app subnets id created
+ * [`private_db_subnets`]: List: list of the private_db subnets id created
  * [`base_sg`]: String: id of the security group created
  * [`private_rts`]:  List: list of the ids of the private route tables created
 

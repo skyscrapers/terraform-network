@@ -12,12 +12,12 @@ variable "amount_public_lb_subnets" {
   default     = "3"
 }
 
-variable "amount_app_subnets" {
+variable "amount_private_app_subnets" {
   description = "Amount of subnets you need"
   default     = "3"
 }
 
-variable "amount_db_subnets" {
+variable "amount_private_db_subnets" {
   description = "Amount of subnets you need"
   default     = "3"
 }
@@ -37,10 +37,10 @@ variable "number_private_rt" {
 variable "netnum_public_lb" {
   default = "10"
 }
-variable "netnum_app" {
+variable "netnum_private_app" {
   default = "20"
 }
-variable "netnum_db" {
+variable "netnum_private_db" {
   default = "30"
 }
 variable "netnum_public_nat-bastion" {

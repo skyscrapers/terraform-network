@@ -37,15 +37,15 @@ resource "aws_route_table" "private" {
 }
 
 # Associate route table to subnets
-resource "aws_route_table_association" "app" {
-  count          = "${var.amount_app_subnets}"
-  subnet_id      = "${element(module.app_subnets.ids, count.index)}"
+resource "aws_route_table_association" "private_app" {
+  count          = "${var.amount_private_app_subnets}"
+  subnet_id      = "${element(module.private_app_subnets.ids, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
 
 # Associate route table to subnets
-resource "aws_route_table_association" "db" {
-  count          = "${var.amount_db_subnets}"
-  subnet_id      = "${element(module.db_subnets.ids, count.index)}"
+resource "aws_route_table_association" "private_db" {
+  count          = "${var.amount_private_db_subnets}"
+  subnet_id      = "${element(module.private_db_subnets.ids, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
