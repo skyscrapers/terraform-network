@@ -1,13 +1,3 @@
-variable "availability_zones" {
-  description = "Availability zones"
-  default     = ["a", "b", "c", "d"]
-}
-
-variable "aws_region" {
-  description = "The AWS region to work in."
-  default     = "eu-west-1"
-}
-
 variable "cidr" {}
 
 variable "newbits" {

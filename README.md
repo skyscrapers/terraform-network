@@ -11,13 +11,19 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 ### Output
  * [`ids`]: List: The ids of the nat gateways created.
 
+### Example
+  ```
+  module "nat_gateway" {
+    source = "nat_gateway"
+    private_route_tables="${module.vpc.private_rts}"
+    public_subnets="${module.vpc.public_subnets}"
+  }
+  ```
 ## Subnets
 
 Creates a number of subnets and divides them in different parts based on the input params
 
 ### Available variables:
- * [`availability_zones`]: List(optional): The ids of the nat gateways created.
- * [`aws_region`]: String(optional): default to eu-west-1
  * [`cidr`]: String(required): the CIDR to be divided into subnets  
  * [`newbits`]: String(optional): default to 8. For details see https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_
  * [`netnum`]: String(optional): default to 0. First number of subnet to start of (ex I want a 10.1,10.2,10.3 subnet I specify 1)
@@ -31,6 +37,20 @@ Creates a number of subnets and divides them in different parts based on the inp
 ### Output
  * [`ids`]: List: the ids of the subnets created
 
+### Example
+```
+module "public_subnets" {
+  source             = "../subnets"
+  num_subnets        = "${var.amount_public_subnets}"
+  name               = "public"
+  cidr               = "${var.cidr_block}"
+  netnum             = 0
+  vpc_id             = "${aws_vpc.main.id}"
+  aws_region         = "${var.aws_region}"
+  environment        = "${var.environment}"
+  project            = "${var.project}"
+}
+```
 ## vpc
 This module will create a vpc with the option to specify 3 types of subnets:
  - app_subnets
@@ -40,8 +60,6 @@ This module will create a vpc with the option to specify 3 types of subnets:
 It will also create the required route tables for the private subnets. The app and db subnets are private subnets.
 
 ### Available variables:
- * [`aws_region`]: String(optional): default to eu-west-1
- * [`availability_zones`]: List(optional): The ids of the nat gateways created.
  * [`cidr_block`]: String(required): the CIDR of the new VPC
  * [`amount_public_subnets`]: String(optional): default to 3. the amount of public subnets required
  * [`amount_app_subnets`]: String(optional): default to 3. the amount of app subnets required
@@ -57,3 +75,14 @@ It will also create the required route tables for the private subnets. The app a
  * [`db_subnets`]: List: list of the db subnets id created
  * [`base_sg`]: String: id of the security group created
  * [`private_rts`]:  List: list of the ids of the private route tables created
+
+### Example
+ ```
+ module "vpc" {
+   source = "vpc"
+   cidr_block = "172.16.0.0/16"
+   project = "test"
+   environment = "prod"
+
+ }
+ ```

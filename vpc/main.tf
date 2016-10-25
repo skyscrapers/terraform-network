@@ -14,12 +14,10 @@ resource "aws_vpc" "main" {
 module "public_subnets" {
   source             = "../subnets"
   num_subnets        = "${var.amount_public_subnets}"
-  availability_zones = "${var.availability_zones}"
   name               = "public"
   cidr               = "${var.cidr_block}"
   netnum             = 0
   vpc_id             = "${aws_vpc.main.id}"
-  aws_region         = "${var.aws_region}"
   environment        = "${var.environment}"
   project            = "${var.project}"
 }
@@ -31,7 +29,6 @@ module "app_subnets" {
   cidr        = "${var.cidr_block}"
   netnum      = 10
   vpc_id      = "${aws_vpc.main.id}"
-  aws_region  = "${var.aws_region}"
   environment = "${var.environment}"
   project     = "${var.project}"
 }
@@ -43,7 +40,6 @@ module "db_subnets" {
   cidr        = "${var.cidr_block}"
   netnum      = 20
   vpc_id      = "${aws_vpc.main.id}"
-  aws_region  = "${var.aws_region}"
   environment = "${var.environment}"
   project     = "${var.project}"
 }

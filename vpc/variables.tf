@@ -1,11 +1,3 @@
-variable "aws_region" {
-  description = "The AWS region to work in."
-  default     = "eu-west-1"
-}
-variable "availability_zones" {
-  description = "Availability zones"
-  default     = ["a", "b", "c", "d"]
-}
 variable "cidr_block" {
   description = "CIDR block you want to have in your VPC"
 }
