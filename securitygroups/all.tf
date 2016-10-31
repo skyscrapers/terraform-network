@@ -14,7 +14,7 @@ resource "aws_security_group" "sg_all" {
 # Allow NTP connections to the outside
 resource "aws_security_group_rule" "sg_bastion_out_ntp" {
   type              = "egress"
-  security_group_id = "${aws_security_group.sg_all}"
+  security_group_id = "${aws_security_group.sg_all.id}"
   from_port         = 123
   to_port           = 123
   protocol          = "udp"
@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "sg_bastion_out_ntp" {
 # Allow HTTPS connections to the outside
 resource "aws_security_group_rule" "sg_bastion_out_https" {
   type              = "egress"
-  security_group_id = "${aws_security_group.sg_all}"
+  security_group_id = "${aws_security_group.sg_all.id}"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
