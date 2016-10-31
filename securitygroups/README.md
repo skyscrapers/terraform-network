@@ -1,6 +1,17 @@
 # securitygroups terraform module
 This module creates and exposes reusable security groups.
 
+The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
+to make the creation and adaptation of security groups much more modular.
+
+The security groups here should be reusable for all setups on one hand and customisable per setup
+on the other hand. 
+
+The `sg_all` security group is a good example for this: the reusable part with 
+outgoing `ntp` and `https` access is in this module, but by exposing the security group, 
+a very specfic TF customer module can extend `sg_all`
+with a rule to allow traffic for customer specific setup, e.g. Datadog.
+
 ## Generated resources
 - security groups:
   * `sg_all`: Security group that needs to be attached to all instances
