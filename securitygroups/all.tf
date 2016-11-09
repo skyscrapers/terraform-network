@@ -43,7 +43,7 @@ resource "aws_security_group_rule" "sg_bastion_out_https" {
 }
 
 # Allow puppet connections to the outside
-resource "aws_security_group_rule" "sg_bastion_out_https" {
+resource "aws_security_group_rule" "sg_bastion_out_puppet" {
   type              = "egress"
   security_group_id = "${aws_security_group.sg_all.id}"
   from_port         = 8140
