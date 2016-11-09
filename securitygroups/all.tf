@@ -21,12 +21,33 @@ resource "aws_security_group_rule" "sg_bastion_out_ntp" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+# Allow HTTP connections to the outside
+resource "aws_security_group_rule" "sg_bastion_out_https" {
+  type              = "egress"
+  security_group_id = "${aws_security_group.sg_all.id}"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+
 # Allow HTTPS connections to the outside
 resource "aws_security_group_rule" "sg_bastion_out_https" {
   type              = "egress"
   security_group_id = "${aws_security_group.sg_all.id}"
   from_port         = 443
   to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+# Allow puppet connections to the outside
+resource "aws_security_group_rule" "sg_bastion_out_https" {
+  type              = "egress"
+  security_group_id = "${aws_security_group.sg_all.id}"
+  from_port         = 8140
+  to_port           = 8140
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
 }
