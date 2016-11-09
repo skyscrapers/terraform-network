@@ -1,7 +1,7 @@
 # Create common security group
 resource "aws_security_group" "sg_all" {
   name        = "sg_all_${var.project}_${var.environment}"
-  description = "Security group that is needed for the reverseproxy servers"
+  description = "General security used on all servers"
   vpc_id      = "${var.vpc_id}"
 
   tags {
