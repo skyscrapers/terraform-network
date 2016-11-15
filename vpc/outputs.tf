@@ -19,3 +19,7 @@ output "private_db_subnets" {
 output "private_rts" {
   value = ["${aws_route_table.private.*.id}"]
 }
+
+output "public_rts" {
+  value = ["${aws_route_table.public.*.id}"]
+}
