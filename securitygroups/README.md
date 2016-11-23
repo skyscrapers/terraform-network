@@ -15,7 +15,7 @@ with a rule to allow traffic for customer specific setup, e.g. Datadog.
 ## Generated resources
 - security groups:
   * `sg_all`: Security group that needs to be attached to all instances
-  * `sg_web`: Security group that allows incoming http/https traffic
+  * `sg_web_public`: Security group that allows incoming http/https traffic for public facing web servers
 
 ## Required variables
 
