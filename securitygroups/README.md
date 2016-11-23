@@ -9,12 +9,13 @@ on the other hand.
 
 The `sg_all` security group is a good example for this: the reusable part with 
 outgoing `ntp` and `https` access is in this module, but by exposing the security group, 
-a very specfic TF customer module can extend `sg_all`
+a very specific TF customer module can extend `sg_all`
 with a rule to allow traffic for customer specific setup, e.g. Datadog.
 
 ## Generated resources
 - security groups:
   * `sg_all`: Security group that needs to be attached to all instances
+  * `sg_web`: Security group that allows incoming http/https traffic
 
 ## Required variables
 
