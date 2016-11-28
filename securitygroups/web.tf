@@ -1,7 +1,7 @@
 # Create common security group
 resource "aws_security_group" "sg_web_public" {
-  name        = "sg_web_${var.project}_${var.environment}"
-  description = "General security group to allow incoming web traffic"
+  name        = "sg_web_public_${var.project}_${var.environment}"
+  description = "General security group to allow incoming web traffic from everywhere"
   vpc_id      = "${var.vpc_id}"
 
   tags {
