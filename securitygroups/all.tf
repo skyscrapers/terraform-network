@@ -1,3 +1,7 @@
+data "aws_vpc" "vpc_info" {
+  id = "${var.vpc_id}"
+}
+
 # Create common security group
 resource "aws_security_group" "sg_all" {
   name        = "sg_all_${var.project}_${var.environment}"
@@ -40,4 +44,13 @@ resource "aws_security_group_rule" "sg_bastion_out_https" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "sg_bastion_ingress_ping" {
+  type              = "ingress"
+  security_group_id = "${aws_security_group.sg_all.id}"
+  from_port         = "-1"
+  to_port           = "-1"
+  protocol          = "icmp"
+  cidr_blocks       = ["${data.aws_vpc.vpc_info.cidr_block}"]
 }
