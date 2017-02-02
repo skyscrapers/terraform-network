@@ -23,3 +23,7 @@ output "private_rts" {
 output "public_rts" {
   value = ["${aws_route_table.public.*.id}"]
 }
+
+output "default_network_acl_id" {
+  value = "${aws_vpc.main.default_network_acl_id}"
+}
