@@ -55,6 +55,18 @@ module "private_db_subnets" {
   project     = "${var.project}"
 }
 
+module "private_management_subnets" {
+  source      = "../subnets"
+  num_subnets = "${var.amount_private_management_subnets}"
+  name        = "private_management"
+  cidr        = "${var.cidr_block}"
+  netnum      = "${var.netnum_private_management}"
+  vpc_id      = "${aws_vpc.main.id}"
+  environment = "${var.environment}"
+  project     = "${var.project}"
+}
+
+
 # Create internet gateway
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.main.id}"
