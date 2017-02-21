@@ -49,7 +49,7 @@ variable "netnum_private_db" {
   default = "30"
 }
 variable "netnum_private_management" {
-  default = "50"
+  default = "200"
 }
 variable "netnum_public_nat-bastion" {
   default = "0"
