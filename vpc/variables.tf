@@ -22,6 +22,11 @@ variable "amount_private_db_subnets" {
   default     = "3"
 }
 
+variable "amount_private_management_subnets" {
+  description = "Amount of subnets you need"
+  default     = "0"
+}
+
 variable "environment" {
   description = "How do you want to call your environment, this is helpful if you have more than 1 VPC."
   default     = "production"
@@ -42,6 +47,9 @@ variable "netnum_private_app" {
 }
 variable "netnum_private_db" {
   default = "30"
+}
+variable "netnum_private_management" {
+  default = "200"
 }
 variable "netnum_public_nat-bastion" {
   default = "0"
