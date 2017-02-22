@@ -39,18 +39,23 @@ variable "project" {
 variable "number_private_rt" {
   default = "1"
 }
+
 variable "netnum_public_lb" {
   default = "10"
 }
+
 variable "netnum_private_app" {
   default = "20"
 }
+
 variable "netnum_private_db" {
   default = "30"
 }
+
 variable "netnum_private_management" {
   default = "200"
 }
+
 variable "netnum_public_nat-bastion" {
   default = "0"
 }

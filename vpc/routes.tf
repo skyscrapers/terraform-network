@@ -19,11 +19,13 @@ resource "aws_route_table_association" "public_lb_hosts" {
   subnet_id      = "${element(module.public_lb_subnets.ids, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
+
 resource "aws_route_table_association" "public_nat-bastion_hosts" {
   count          = "${var.amount_public_nat-bastion_subnets}"
   subnet_id      = "${element(module.public_nat-bastion_subnets.ids, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
+
 # Create route table
 resource "aws_route_table" "private" {
   count  = "${var.number_private_rt}"
