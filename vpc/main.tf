@@ -1,14 +1,14 @@
+terraform {
+  required_version = "> 0.8.0"
+}
+
 # Create a VPC
 resource "aws_vpc" "main" {
   cidr_block           = "${var.cidr_block}"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags {
-    Name        = "${var.project} VPC"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge("${var.tags}",map("Name", "${var.project} VPC", "Environment", "${var.environment}", "Project", "${var.project}"))}"
 }
 
 module "public_nat-bastion_subnets" {
@@ -20,6 +20,7 @@ module "public_nat-bastion_subnets" {
   vpc_id             = "${aws_vpc.main.id}"
   environment        = "${var.environment}"
   project            = "${var.project}"
+  tags        = "${var.tags}"
 }
 
 module "public_lb_subnets" {
@@ -31,6 +32,7 @@ module "public_lb_subnets" {
   vpc_id             = "${aws_vpc.main.id}"
   environment        = "${var.environment}"
   project            = "${var.project}"
+  tags        = "${var.tags}"
 }
 
 module "private_app_subnets" {
@@ -42,6 +44,7 @@ module "private_app_subnets" {
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"
+  tags        = "${var.tags}"
 }
 
 module "private_db_subnets" {
@@ -53,6 +56,7 @@ module "private_db_subnets" {
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"
+  tags        = "${var.tags}"
 }
 
 module "private_management_subnets" {
@@ -64,6 +68,7 @@ module "private_management_subnets" {
   vpc_id      = "${aws_vpc.main.id}"
   environment = "${var.environment}"
   project     = "${var.project}"
+  tags        = "${var.tags}"
 }
 
 
@@ -71,9 +76,5 @@ module "private_management_subnets" {
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.main.id}"
 
-  tags {
-    Name        = "${var.project} internet gateway"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", "${var.project} internet gateway", "Environment", "${var.environment}", "Project", "${var.project}"),"${var.tags}")}"
 }

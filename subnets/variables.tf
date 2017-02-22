@@ -18,9 +18,10 @@ variable "name" {
   description = "Name of the subnets"
 }
 
-variable "tag" {
-  description = "Optional subnet tag"
-  default     = ""
+variable "tags" {
+  type        = "map"
+  description = "Optional Tags"
+  default     = {}
 }
 
 variable "project" {

@@ -1,5 +1,9 @@
+terraform {
+  required_version = "> 0.8.0"
+}
+
 data "aws_availability_zones" "available" {
-  state="available"
+  state = "available"
 }
 
 resource "aws_subnet" "subnets" {
@@ -8,10 +12,5 @@ resource "aws_subnet" "subnets" {
   cidr_block        = "${cidrsubnet(var.cidr,var.newbits,var.netnum+count.index)}"
   availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
 
-  tags {
-    Name        = "${var.project}-${var.name}${var.tag}-${element(data.aws_availability_zones.available.names, count.index)}"
-    tags        = "${var.tag}"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge("${var.tags}",map("Name", "${var.project}-${var.name}-${element(data.aws_availability_zones.available.names, count.index)}", "Environment", "${var.environment}", "Project", "${var.project}"))}"
 }

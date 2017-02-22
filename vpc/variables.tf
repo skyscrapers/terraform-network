@@ -54,3 +54,9 @@ variable "netnum_private_management" {
 variable "netnum_public_nat-bastion" {
   default = "0"
 }
+
+variable "tags" {
+  type        = "map"
+  description = "Optional Tags"
+  default     = {}
+}

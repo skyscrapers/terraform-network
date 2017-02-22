@@ -29,7 +29,7 @@ Creates a number of subnets and divides them in different parts based on the inp
  * [`netnum`]: String(optional): default to 0. First number of subnet to start of (ex I want a 10.1,10.2,10.3 subnet I specify 1)
  * [`vpc_id`]: String(required): the VPC ID where we want to create the subnets
  * [`name`]: String(required): the name of the subnets
- * [`tag`]: String(optional): optional subnet tag
+ * [`tags`]: Map(optional): optional tags
  * [`project`]: String(required): the name of the project these subnets belong to
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
  * [`num_subnets`]: String(optional): default to 3. the number of subnets we want to create
@@ -49,6 +49,7 @@ module "public_lb_subnets" {
   aws_region         = "${var.aws_region}"
   environment        = "${var.environment}"
   project            = "${var.project}"
+  tags               = { "KubernetesCluster" = "test" }
 }
 ```
 ## vpc
@@ -73,6 +74,8 @@ It will also create the required route tables for the private subnets. The priva
  * [`netnum_public_lb`]: String(optional): default to 10. First number of subnet to start of for public_lb subnets
  * [`netnum_private_app`]: String(optional): default to 20. First number of subnet to start of for private_app subnets
  * [`netnum_private_db`]: String(optional): default to 30. First number of subnet to start of for private_db subnets
+ * [`tags`]: Map(optional): optional tags
+
 
 ### Output:
  * [`vpc_id`]: String: the id of the vpc created
@@ -86,10 +89,10 @@ It will also create the required route tables for the private subnets. The priva
 ### Example
  ```
  module "vpc" {
-   source = "vpc"
-   cidr_block = "172.16.0.0/16"
-   project = "test"
+   source      = "vpc"
+   cidr_block  = "172.16.0.0/16"
+   project     = "test"
    environment = "prod"
-
+   tags        = { "KubernetesCluster" = "test" }
  }
  ```
