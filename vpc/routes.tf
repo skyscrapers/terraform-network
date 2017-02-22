@@ -7,11 +7,7 @@ resource "aws_route_table" "public" {
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
 
-  tags {
-    Name        = "${var.project} public route table"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge("${var.tags}",map("Name", "${var.project} public route table", "Environment", "${var.environment}", "Project", "${var.project}"))}"
 }
 
 resource "aws_route_table_association" "public_lb_hosts" {
@@ -31,11 +27,7 @@ resource "aws_route_table" "private" {
   count  = "${var.number_private_rt}"
   vpc_id = "${aws_vpc.main.id}"
 
-  tags {
-    Name        = "${var.project} private route table"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge("${var.tags}",map("Name", "${var.project} private route table", "Environment", "${var.environment}", "Project", "${var.project}"))}"
 }
 
 # Associate route table to subnets
