@@ -43,3 +43,10 @@ resource "aws_route_table_association" "private_db" {
   subnet_id      = "${element(module.private_db_subnets.ids, count.index)}"
   route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
 }
+
+# Associate route table to subnets
+resource "aws_route_table_association" "private_management" {
+  count          = "${var.amount_private_management_subnets}"
+  subnet_id      = "${element(module.private_management_subnets.ids, count.index)}"
+  route_table_id = "${element(aws_route_table.private.*.id, count.index)}"
+}
