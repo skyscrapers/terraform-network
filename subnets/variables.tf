@@ -14,8 +14,12 @@ variable "vpc_id" {
   description = "ID of the VPC where we want to deploy the subnet in"
 }
 
-variable "name" {
-  description = "Name of the subnets"
+variable "role" {
+  description = "Role of the subnets. Example values are `app`, `lb` and `db`"
+}
+
+variable "visibility" {
+  description = "Visibility of this subnet. Valid values are `public` and `private`"
 }
 
 variable "tags" {

@@ -1,5 +1,5 @@
 terraform {
-  required_version = "> 0.8.0"
+  required_version = ">= 0.8.0"
 }
 
 # Create a VPC
@@ -14,7 +14,8 @@ resource "aws_vpc" "main" {
 module "public_nat-bastion_subnets" {
   source      = "../subnets"
   num_subnets = "${var.amount_public_nat-bastion_subnets}"
-  name        = "public_nat-bastion"
+  visibility  = "public"
+  role        = "nat-bastion"
   cidr        = "${var.cidr_block}"
   netnum      = "${var.netnum_public_nat-bastion}"
   vpc_id      = "${aws_vpc.main.id}"
@@ -26,7 +27,8 @@ module "public_nat-bastion_subnets" {
 module "public_lb_subnets" {
   source      = "../subnets"
   num_subnets = "${var.amount_public_lb_subnets}"
-  name        = "public_lb"
+  visibility  = "public"
+  role        = "lb"
   cidr        = "${var.cidr_block}"
   netnum      = "${var.netnum_public_lb}"
   vpc_id      = "${aws_vpc.main.id}"
@@ -38,7 +40,8 @@ module "public_lb_subnets" {
 module "private_app_subnets" {
   source      = "../subnets"
   num_subnets = "${var.amount_private_app_subnets}"
-  name        = "private_app"
+  visibility  = "private"
+  role        = "app"
   cidr        = "${var.cidr_block}"
   netnum      = "${var.netnum_private_app}"
   vpc_id      = "${aws_vpc.main.id}"
@@ -50,7 +53,8 @@ module "private_app_subnets" {
 module "private_db_subnets" {
   source      = "../subnets"
   num_subnets = "${var.amount_private_db_subnets}"
-  name        = "private_db"
+  visibility  = "private"
+  role        = "db"
   cidr        = "${var.cidr_block}"
   netnum      = "${var.netnum_private_db}"
   vpc_id      = "${aws_vpc.main.id}"
@@ -62,7 +66,8 @@ module "private_db_subnets" {
 module "private_management_subnets" {
   source      = "../subnets"
   num_subnets = "${var.amount_private_management_subnets}"
-  name        = "private_management"
+  visibility  = "private"
+  role        = "management"
   cidr        = "${var.cidr_block}"
   netnum      = "${var.netnum_private_management}"
   vpc_id      = "${aws_vpc.main.id}"

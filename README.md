@@ -28,7 +28,8 @@ Creates a number of subnets and divides them in different parts based on the inp
  * [`newbits`]: String(optional): default to 8. For details see https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_
  * [`netnum`]: String(optional): default to 0. First number of subnet to start of (ex I want a 10.1,10.2,10.3 subnet I specify 1)
  * [`vpc_id`]: String(required): the VPC ID where we want to create the subnets
- * [`name`]: String(required): the name of the subnets
+ * [`role`]: String(required): the role of the subnets. Example values are `lb`, `db` and `app`.
+ * [`visibility`]: String(required): the visibility of the subnets. Valid values are `public` and `private`
  * [`tags`]: Map(optional): optional tags
  * [`project`]: String(required): the name of the project these subnets belong to
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
@@ -42,7 +43,8 @@ Creates a number of subnets and divides them in different parts based on the inp
 module "public_lb_subnets" {
   source             = "../subnets"
   num_subnets        = "${var.amount_public_lb_subnets}"
-  name               = "public_lb"
+  visibility         = "public"
+  role               = "lb"
   cidr               = "${var.cidr_block}"
   netnum             = 0
   vpc_id             = "${aws_vpc.main.id}"
