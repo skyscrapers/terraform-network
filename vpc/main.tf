@@ -8,7 +8,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = "${merge("${var.tags}",map("Name", "${var.project} VPC", "Environment", "${var.environment}", "Project", "${var.project}"))}"
+  tags = "${merge("${var.tags}",map("Name", "${var.project} ${var.environment} VPC", "Environment", "${var.environment}", "Project", "${var.project}"))}"
 }
 
 module "public_nat-bastion_subnets" {
