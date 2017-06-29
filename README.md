@@ -156,7 +156,7 @@ module "securitygroup_icinga" {
 
 ## securitygroups/puppet
 
-This module creates and exposes a reusable security group called `sg_icinga_satellite`, expanded
+This module creates and exposes a reusable security group called `sg_puppet`, expanded
 with project and environment info.
 
 The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
