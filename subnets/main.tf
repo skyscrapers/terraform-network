@@ -1,5 +1,5 @@
 terraform {
-  required_version = "> 0.8.0"
+  required_version = "> 0.9.11"
 }
 
 data "aws_availability_zones" "available" {
@@ -13,4 +13,10 @@ resource "aws_subnet" "subnets" {
   availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
 
   tags = "${merge("${var.tags}",map("Name", "${var.project}-${var.visibility}-${var.role}-${element(data.aws_availability_zones.available.names, count.index)}", "Environment", "${var.environment}", "Project", "${var.project}", "Role", "${var.role}", "Visibility", "${var.visibility}"))}"
+}
+
+resource "aws_route_table_association" "subnet_association" {
+  count          = "${length(var.route_tables) >0 ? "${var.num_subnets}" : 0 }"
+  subnet_id      = "${element(aws_subnet.subnets.*.id, count.index)}"
+  route_table_id = "${element(var.route_tables, count.index)}"
 }

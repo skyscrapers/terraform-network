@@ -39,3 +39,7 @@ variable "environment" {
 variable "num_subnets" {
   default = "3"
 }
+variable "route_tables" {
+  type = "list"
+  default = []
+}

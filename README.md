@@ -77,6 +77,7 @@ It will also create the required route tables for the private subnets. The priva
  * [`netnum_private_app`]: String(optional): default to 20. First number of subnet to start of for private_app subnets
  * [`netnum_private_db`]: String(optional): default to 30. First number of subnet to start of for private_db subnets
  * [`tags`]: Map(optional): optional tags
+ * [`route_tables`]: List(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected using a standard mod algorithm
 
 
 ### Output:
