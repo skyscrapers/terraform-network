@@ -1,5 +1,5 @@
 terraform {
-  required_version = "> 0.8.0"
+  required_version = "> 0.9.11"
 }
 
 data "aws_availability_zones" "available" {

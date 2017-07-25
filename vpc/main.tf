@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.8.0"
+  required_version = ">= 0.9.11"
 }
 
 # Create a VPC
@@ -22,6 +22,7 @@ module "public_nat-bastion_subnets" {
   environment = "${var.environment}"
   project     = "${var.project}"
   tags        = "${var.tags}"
+  route_tables = "${aws_route_table.public.*.id}"
 }
 
 module "public_lb_subnets" {
@@ -35,6 +36,7 @@ module "public_lb_subnets" {
   environment = "${var.environment}"
   project     = "${var.project}"
   tags        = "${var.tags}"
+  route_tables = "${aws_route_table.public.*.id}"
 }
 
 module "private_app_subnets" {
@@ -48,6 +50,7 @@ module "private_app_subnets" {
   environment = "${var.environment}"
   project     = "${var.project}"
   tags        = "${var.tags}"
+  route_tables = "${aws_route_table.private.*.id}"
 }
 
 module "private_db_subnets" {
@@ -61,6 +64,7 @@ module "private_db_subnets" {
   environment = "${var.environment}"
   project     = "${var.project}"
   tags        = "${var.tags}"
+  route_tables = "${aws_route_table.private.*.id}"
 }
 
 module "private_management_subnets" {
@@ -74,6 +78,7 @@ module "private_management_subnets" {
   environment = "${var.environment}"
   project     = "${var.project}"
   tags        = "${var.tags}"
+  route_tables = "${aws_route_table.private.*.id}"
 }
 
 # Create internet gateway
