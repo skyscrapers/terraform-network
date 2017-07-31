@@ -55,3 +55,23 @@ resource "aws_security_group_rule" "icinga_outside3_from_tools01" {
   protocol          = "tcp"
   cidr_blocks       = ["${var.icinga_master_ip}"]
 }
+
+resource "aws_security_group_rule" "nrpe_satellite_to_instances" {
+  count                    = "${length(var.internal_sg_id) > 0 ? 1 : 0}"
+  type                     = "egress"
+  security_group_id        = "${aws_security_group.sg_icinga_satellite.id}"
+  from_port                = "5666"
+  to_port                  = "5666"
+  protocol                 = "tcp"
+  source_security_group_id = "${var.internal_sg_id}"
+}
+
+resource "aws_security_group_rule" "nrpe_instances_to_satellite" {
+  count                    = "${length(var.internal_sg_id) > 0 ? 1 : 0}"
+  type                     = "ingress"
+  security_group_id        = "${var.internal_sg_id}"
+  from_port                = "5666"
+  to_port                  = "5666"
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.sg_icinga_satellite.id}"
+}

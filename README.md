@@ -139,6 +139,7 @@ to make the creation and adaptation of security groups much more modular.
  * [`project`]: String(required): the name of the customer or project
  * [`environment`]: String(required): the environment to create the security group in. Examples: `staging`, `production`
  * [`icinga_master_ip`]: String(required): the IP address of the Icinga master in CIDR notation.
+ * [`internal_sg_id`]: String(optional): The Icinga satellite will be able to access this security group through NRPE, if provided.
 
 ### Output:
  * [`sg_id`]: String: the id of the security group created
