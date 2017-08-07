@@ -23,7 +23,7 @@ module "public_nat-bastion_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.public.*.id}"
-  num_route_tables = "${length(aws_route_table.public.*.id)}"
+  num_route_tables = "1"
 }
 
 module "public_lb_subnets" {
@@ -38,6 +38,7 @@ module "public_lb_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.public.*.id}"
+  num_route_tables = "1"
 }
 
 module "private_app_subnets" {
@@ -52,6 +53,7 @@ module "private_app_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.private.*.id}"
+  num_route_tables = "${var.number_private_rt}"
 }
 
 module "private_db_subnets" {
@@ -66,6 +68,7 @@ module "private_db_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.private.*.id}"
+  num_route_tables = "${var.number_private_rt}"
 }
 
 module "private_management_subnets" {
@@ -80,6 +83,7 @@ module "private_management_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.private.*.id}"
+  num_route_tables = "${var.number_private_rt}"
 }
 
 # Create internet gateway

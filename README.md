@@ -34,6 +34,8 @@ Creates a number of subnets and divides them in different parts based on the inp
  * [`project`]: String(required): the name of the project these subnets belong to
  * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
  * [`num_subnets`]: String(optional): default to 3. the number of subnets we want to create
+ * [`route_tables`]: List(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected using a standard mod algorithm
+ * [`num_route_tables`]: String(optional): default to 0. the number of route tables passed in route_tables. NOTE: this is due to a bug in terraform that cannot iterate over count param
 
 ### Output
  * [`ids`]: List: the ids of the subnets created
@@ -77,7 +79,6 @@ It will also create the required route tables for the private subnets. The priva
  * [`netnum_private_app`]: String(optional): default to 20. First number of subnet to start of for private_app subnets
  * [`netnum_private_db`]: String(optional): default to 30. First number of subnet to start of for private_db subnets
  * [`tags`]: Map(optional): optional tags
- * [`route_tables`]: List(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected using a standard mod algorithm
 
 
 ### Output:
