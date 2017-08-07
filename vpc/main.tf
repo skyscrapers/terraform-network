@@ -23,6 +23,7 @@ module "public_nat-bastion_subnets" {
   project     = "${var.project}"
   tags        = "${var.tags}"
   route_tables = "${aws_route_table.public.*.id}"
+  num_route_tables = "${length(aws_route_table.public.*.id)}"
 }
 
 module "public_lb_subnets" {
