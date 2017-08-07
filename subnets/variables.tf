@@ -43,3 +43,6 @@ variable "route_tables" {
   type = "list"
   default = []
 }
+variable "num_route_tables" {
+  default = "0"
+}
