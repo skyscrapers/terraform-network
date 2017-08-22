@@ -18,6 +18,10 @@ output "private_db_subnets" {
   value = "${module.private_db_subnets.ids}"
 }
 
+output "private_management_subnets" {
+  value = "${module.private_management_subnets.ids}"
+}
+
 output "private_rts" {
   value = ["${aws_route_table.private.*.id}"]
 }
