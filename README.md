@@ -11,6 +11,7 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 * [`private_route_tables`]: List(required): List of private route tables that require the nat gateway [NOTE the number of nat gateways should match the number of private routes]
 * [`number_nat_gateways`]: String(optional):  Number of nat gateways required
 * [`public_subnets`]: List(required): The subnets where we are going to create/deploy the NAT gateways
+* [`tags`]: Map(optional): optional tags
 
 ### Output
 

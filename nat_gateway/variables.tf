@@ -7,3 +7,9 @@ variable "number_nat_gateways" {
 variable "public_subnets" {
   type = "list"
 }
+
+variable "tags" {
+  type        = "map"
+  description = "Optional extra tags"
+  default     = {}
+}
