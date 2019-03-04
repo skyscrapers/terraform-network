@@ -65,3 +65,33 @@ variable "tags" {
   description = "Optional Tags"
   default     = {}
 }
+
+variable "public_nat-bastion_extra_tags" {
+  type        = "map"
+  description = "public nat/bastion subnets extra tags"
+  default     = {}
+}
+
+variable "public_lb_extra_tags" {
+  type        = "map"
+  description = "public load balancer subnets extra tags"
+  default     = {}
+}
+
+variable "public_app_extra_tags" {
+  type        = "map"
+  description = "public app subnets extra tags"
+  default     = {}
+}
+
+variable "private_db_extra_tags" {
+  type        = "map"
+  description = "private database subnets extra tags"
+  default     = {}
+}
+
+variable "private_management_extra_tags" {
+  type        = "map"
+  description = "private management subnets extra tags"
+  default     = {}
+}

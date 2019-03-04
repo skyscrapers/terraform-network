@@ -1,7 +1,7 @@
 resource "aws_security_group" "sg_icinga_satellite" {
-  name = "sg_icinga_satellite_${var.project}_${var.environment}"
+  name        = "sg_icinga_satellite_${var.project}_${var.environment}"
   description = "Icinga Satellite Security Group"
-  vpc_id = "${var.vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   tags {
     Name        = "${var.project}-${var.environment}-sg_icinga_sattelite"
