@@ -21,7 +21,7 @@ module "public_nat-bastion_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge("${var.public_nat-bastion_extra_tags}",${var.tags})}"
+  tags             = "${merge(var.public_nat-bastion_extra_tags,var.tags)}"
   route_tables     = "${aws_route_table.public.*.id}"
   num_route_tables = "1"
 }
@@ -36,7 +36,7 @@ module "public_lb_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge("${var.public_lb_extra_tags}",${var.tags})}"
+  tags             = "${merge(var.public_lb_extra_tags,var.tags)}"
   route_tables     = "${aws_route_table.public.*.id}"
   num_route_tables = "1"
 }
@@ -51,7 +51,7 @@ module "private_app_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge("${var.public_app_extra_tags}",${var.tags})}"
+  tags             = "${merge(var.public_app_extra_tags,var.tags)}"
   route_tables     = "${aws_route_table.private.*.id}"
   num_route_tables = "${var.number_private_rt}"
 }
@@ -66,7 +66,7 @@ module "private_db_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge("${var.private_db_extra_tags}",${var.tags})}"
+  tags             = "${merge(var.private_db_extra_tags,var.tags)}"
   route_tables     = "${aws_route_table.private.*.id}"
   num_route_tables = "${var.number_private_rt}"
 }
@@ -81,7 +81,7 @@ module "private_management_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge("${var.private_management_extra_tags}",${var.tags})}"
+  tags             = "${merge(var.private_management_extra_tags,var.tags)}"
   route_tables     = "${aws_route_table.private.*.id}"
   num_route_tables = "${var.number_private_rt}"
 }
