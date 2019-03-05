@@ -66,31 +66,37 @@ variable "tags" {
   default     = {}
 }
 
-variable "public_nat-bastion_extra_tags" {
+variable "extra_tags_vpc" {
+  type        = "map"
+  description = "VPC extra tags"
+  default     = {}
+}
+
+variable "extra_tags_public_nat-bastion" {
   type        = "map"
   description = "public nat/bastion subnets extra tags"
   default     = {}
 }
 
-variable "public_lb_extra_tags" {
+variable "extra_tags_public_lb" {
   type        = "map"
   description = "public load balancer subnets extra tags"
   default     = {}
 }
 
-variable "public_app_extra_tags" {
+variable "extra_tags_public_app" {
   type        = "map"
   description = "public app subnets extra tags"
   default     = {}
 }
 
-variable "private_db_extra_tags" {
+variable "extra_tags_private_db" {
   type        = "map"
   description = "private database subnets extra tags"
   default     = {}
 }
 
-variable "private_management_extra_tags" {
+variable "extra_tags_private_management" {
   type        = "map"
   description = "private management subnets extra tags"
   default     = {}
