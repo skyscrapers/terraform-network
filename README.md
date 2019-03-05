@@ -81,29 +81,43 @@ It will also create the required route tables for the private subnets. The priva
 
 ### Available variables
 
-* [`cidr_block`]: String(required): the CIDR of the new VPC
-* [`amount_public_nat-bastion_subnets`]: String(optional): default to 3. the amount of public_nat-bastion subnets required
-* [`amount_public_lb_subnets`]: String(optional): default to 3. the amount of public_lb subnets required
-* [`amount_private_app_subnets`]: String(optional): default to 3. the amount of private_app subnets required
-* [`amount_private_db_subnets`]: String(optional): default to 3. the amount of private_db subnets required
-* [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
-* [`project`]: String(required): the name of the project these subnets belong to
-* [`number_private_rt`]: String(optional): default to 1. the desired number of private route tables. In case we want one per AZ we can change this value.
-* [`netnum_public_nat-bastion`]: String(optional): default to 0. First number of subnet to start of for public_nat-bastion subnets
-* [`netnum_public_lb`]: String(optional): default to 10. First number of subnet to start of for public_lb subnets
-* [`netnum_private_app`]: String(optional): default to 20. First number of subnet to start of for private_app subnets
-* [`netnum_private_db`]: String(optional): default to 30. First number of subnet to start of for private_db subnets
-* [`tags`]: Map(optional): optional tags
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| amount\_private\_app\_subnets | Amount of subnets you need | string | `"3"` | no |
+| amount\_private\_db\_subnets | Amount of subnets you need | string | `"3"` | no |
+| amount\_private\_management\_subnets | Amount of subnets you need | string | `"0"` | no |
+| amount\_public\_lb\_subnets | Amount of subnets you need | string | `"3"` | no |
+| amount\_public\_nat-bastion\_subnets | Amount of subnets you need | string | `"1"` | no |
+| cidr\_block | CIDR block you want to have in your VPC | string | n/a | yes |
+| environment | How do you want to call your environment, this is helpful if you have more than 1 VPC. | string | `"production"` | no |
+| extra\_tags\_private\_db | Private database subnets extra tags | map | `<map>` | no |
+| extra\_tags\_private\_management | Private management subnets extra tags | map | `<map>` | no |
+| extra\_tags\_public\_app | Public app subnets extra tags | map | `<map>` | no |
+| extra\_tags\_public\_lb | Public load balancer subnets extra tags | map | `<map>` | no |
+| extra\_tags\_public\_nat-bastion | Public nat/bastion subnets extra tags | map | `<map>` | no |
+| extra\_tags\_vpc | VPC extra tags | map | `<map>` | no |
+| netnum\_private\_app | First number of subnet to start of for private_app subnets | string | `"20"` | no |
+| netnum\_private\_db | First number of subnet to start of for private_db subnets | string | `"30"` | no |
+| netnum\_private\_management | First number of subnet to start of for private_management subnets | string | `"200"` | no |
+| netnum\_public\_lb | First number of subnet to start of for public_lb subnets | string | `"10"` | no |
+| netnum\_public\_nat-bastion | First number of subnet to start of for public_nat-bastion subnets | string | `"0"` | no |
+| number\_private\_rt | The desired number of private route tables. In case we want one per AZ we can change this value. | string | `"1"` | no |
+| project | The current project | string | n/a | yes |
+| tags | Optional Tags | map | `<map>` | no |
 
-### Output
+## Outputs
 
-* [`vpc_id`]: String: the id of the vpc created
-* [`public_nat-bastion`]: List: list of the public_nat-bastion subnets id created
-* [`public_lb_subnets`]: List: list of the public_lb subnets id created
-* [`private_app_subnets`]: List: list of the private_app subnets id created
-* [`private_db_subnets`]: List: list of the private_db subnets id created
-* [`base_sg`]: String: id of the security group created
-* [`private_rts`]:  List: list of the ids of the private route tables created
+| Name | Description |
+|------|-------------|
+| default\_network\_acl\_id | Id of the default network acl |
+| private\_app\_subnets | List of the private_app subnets id created |
+| private\_db\_subnets | List of the private_db subnets id created |
+| private\_management\_subnets | List of the private_management subnets id created |
+| private\_rts | List of the ids of the private route tables created |
+| public\_lb\_subnets | List of the public_lb subnets id created |
+| public\_nat-bastion | List of the public_nat-bastion subnets id created |
+| public\_rts | List of the ids of the public route tables created |
+| vpc\_id | The id of the vpc created |
 
 ### Example
 

@@ -37,26 +37,32 @@ variable "project" {
 }
 
 variable "number_private_rt" {
+  description = "The desired number of private route tables. In case we want one per AZ we can change this value."
   default = "1"
 }
 
 variable "netnum_public_lb" {
+  description = "First number of subnet to start of for public_lb subnets"
   default = "10"
 }
 
 variable "netnum_private_app" {
+  description = "First number of subnet to start of for private_app subnets"
   default = "20"
 }
 
 variable "netnum_private_db" {
+  description = "First number of subnet to start of for private_db subnets"
   default = "30"
 }
 
 variable "netnum_private_management" {
+  description = "First number of subnet to start of for private_management subnets"
   default = "200"
 }
 
 variable "netnum_public_nat-bastion" {
+  description = "First number of subnet to start of for public_nat-bastion subnets"
   default = "0"
 }
 
@@ -74,30 +80,30 @@ variable "extra_tags_vpc" {
 
 variable "extra_tags_public_nat-bastion" {
   type        = "map"
-  description = "public nat/bastion subnets extra tags"
+  description = "Public nat/bastion subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_lb" {
   type        = "map"
-  description = "public load balancer subnets extra tags"
+  description = "Public load balancer subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_app" {
   type        = "map"
-  description = "public app subnets extra tags"
+  description = "Public app subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_db" {
   type        = "map"
-  description = "private database subnets extra tags"
+  description = "Private database subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_management" {
   type        = "map"
-  description = "private management subnets extra tags"
+  description = "Private management subnets extra tags"
   default     = {}
 }
