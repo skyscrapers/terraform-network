@@ -38,32 +38,32 @@ variable "project" {
 
 variable "number_private_rt" {
   description = "The desired number of private route tables. In case we want one per AZ we can change this value."
-  default = "1"
+  default     = "1"
 }
 
 variable "netnum_public_lb" {
   description = "First number of subnet to start of for public_lb subnets"
-  default = "10"
+  default     = "10"
 }
 
 variable "netnum_private_app" {
   description = "First number of subnet to start of for private_app subnets"
-  default = "20"
+  default     = "20"
 }
 
 variable "netnum_private_db" {
   description = "First number of subnet to start of for private_db subnets"
-  default = "30"
+  default     = "30"
 }
 
 variable "netnum_private_management" {
   description = "First number of subnet to start of for private_management subnets"
-  default = "200"
+  default     = "200"
 }
 
 variable "netnum_public_nat-bastion" {
   description = "First number of subnet to start of for public_nat-bastion subnets"
-  default = "0"
+  default     = "0"
 }
 
 variable "tags" {
