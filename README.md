@@ -90,9 +90,9 @@ It will also create the required route tables for the private subnets. The priva
 | amount\_public\_nat-bastion\_subnets | Amount of subnets you need | string | `"1"` | no |
 | cidr\_block | CIDR block you want to have in your VPC | string | n/a | yes |
 | environment | How do you want to call your environment, this is helpful if you have more than 1 VPC. | string | `"production"` | no |
+| extra\_tags\_private\_app | Private app subnets extra tags | map | `<map>` | no |
 | extra\_tags\_private\_db | Private database subnets extra tags | map | `<map>` | no |
 | extra\_tags\_private\_management | Private management subnets extra tags | map | `<map>` | no |
-| extra\_tags\_public\_app | Public app subnets extra tags | map | `<map>` | no |
 | extra\_tags\_public\_lb | Public load balancer subnets extra tags | map | `<map>` | no |
 | extra\_tags\_public\_nat-bastion | Public nat/bastion subnets extra tags | map | `<map>` | no |
 | extra\_tags\_vpc | VPC extra tags | map | `<map>` | no |
