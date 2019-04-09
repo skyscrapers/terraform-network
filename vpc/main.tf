@@ -51,7 +51,7 @@ module "private_app_subnets" {
   vpc_id           = "${aws_vpc.main.id}"
   environment      = "${var.environment}"
   project          = "${var.project}"
-  tags             = "${merge(var.extra_tags_public_app,var.tags)}"
+  tags             = "${merge(var.extra_tags_private_app,var.tags)}"
   route_tables     = "${aws_route_table.private.*.id}"
   num_route_tables = "${var.number_private_rt}"
 }

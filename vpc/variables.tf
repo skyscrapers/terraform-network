@@ -90,9 +90,9 @@ variable "extra_tags_public_lb" {
   default     = {}
 }
 
-variable "extra_tags_public_app" {
+variable "extra_tags_private_app" {
   type        = "map"
-  description = "Public app subnets extra tags"
+  description = "Private app subnets extra tags"
   default     = {}
 }
 
