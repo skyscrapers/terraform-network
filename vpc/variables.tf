@@ -67,43 +67,44 @@ variable "netnum_public_nat-bastion" {
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   description = "Optional Tags"
   default     = {}
 }
 
 variable "extra_tags_vpc" {
-  type        = "map"
+  type        = map(string)
   description = "VPC extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_nat-bastion" {
-  type        = "map"
+  type        = map(string)
   description = "Public nat/bastion subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_lb" {
-  type        = "map"
+  type        = map(string)
   description = "Public load balancer subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_app" {
-  type        = "map"
+  type        = map(string)
   description = "Private app subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_db" {
-  type        = "map"
+  type        = map(string)
   description = "Private database subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_management" {
-  type        = "map"
+  type        = map(string)
   description = "Private management subnets extra tags"
   default     = {}
 }
+

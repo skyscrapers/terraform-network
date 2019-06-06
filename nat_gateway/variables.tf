@@ -1,5 +1,5 @@
 variable "private_route_tables" {
-  type = "list"
+  type = list(string)
 }
 
 variable "number_nat_gateways" {
@@ -7,11 +7,12 @@ variable "number_nat_gateways" {
 }
 
 variable "public_subnets" {
-  type = "list"
+  type = list(string)
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   description = "Optional extra tags"
   default     = {}
 }
+
