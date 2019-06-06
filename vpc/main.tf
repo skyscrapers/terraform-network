@@ -4,7 +4,8 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = merge(
-    merge(var.extra_tags_vpc, var.tags),
+    var.extra_tags_vpc,
+    var.tags,
     {
       "Name"        = "${var.project} ${var.environment} VPC"
       "Environment" = var.environment
@@ -93,10 +94,9 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(
-    var.extra_tags_vpc,
     var.tags,
     {
-      "Name"        = "${var.project} ${var.environment} VPC"
+      "Name"        = "${var.project} internet gateway"
       "Environment" = var.environment
       "Project"     = var.project
     },
