@@ -30,16 +30,15 @@ output "private_management_subnets" {
 
 output "private_rts" {
   description = "List of the ids of the private route tables created"
-  value       = [aws_route_table.private.*.id]
+  value       = aws_route_table.private.*.id
 }
 
 output "public_rts" {
   description = "List of the ids of the public route tables created"
-  value       = [aws_route_table.public.*.id]
+  value       = aws_route_table.public.*.id
 }
 
 output "default_network_acl_id" {
   description = "Id of the default network acl"
   value       = aws_vpc.main.default_network_acl_id
 }
-
