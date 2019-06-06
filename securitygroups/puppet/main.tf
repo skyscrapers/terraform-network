@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 resource "aws_security_group" "sg_puppet" {
   name        = "sg_puppet_${var.project}_${var.environment}"
   description = "Puppet Security Group"

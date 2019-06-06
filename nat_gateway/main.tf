@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 resource "aws_eip" "nat_gateway" {
   count = var.number_nat_gateways
   vpc   = true

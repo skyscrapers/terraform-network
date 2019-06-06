@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   enable_dns_support   = true
@@ -97,9 +93,10 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(
+    var.extra_tags_vpc,
     var.tags,
     {
-      "Name"        = "${var.project} internet gateway"
+      "Name"        = "${var.project} ${var.environment} VPC"
       "Environment" = var.environment
       "Project"     = var.project
     },

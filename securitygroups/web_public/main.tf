@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 # Create common security group
 resource "aws_security_group" "sg_web_public" {
   name        = "sg_web_public_${var.project}_${var.environment}"

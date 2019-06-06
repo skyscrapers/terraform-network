@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 resource "aws_security_group" "sg_icinga_satellite" {
   name        = "sg_icinga_satellite_${var.project}_${var.environment}"
   description = "Icinga Satellite Security Group"

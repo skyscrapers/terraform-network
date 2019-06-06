@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12"
-}
-
 data "aws_vpc" "vpc_info" {
   id = var.vpc_id
 }
