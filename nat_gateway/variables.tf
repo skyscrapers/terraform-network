@@ -15,4 +15,3 @@ variable "tags" {
   description = "Optional extra tags"
   default     = {}
 }
-

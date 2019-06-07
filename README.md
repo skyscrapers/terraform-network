@@ -22,8 +22,8 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 ```hcl
 module "nat_gateway" {
   source = "nat_gateway"
-  private_route_tables="${module.vpc.private_rts}"
-  public_subnets="${module.vpc.public_subnets}"
+  private_route_tables=module.vpc.private_rts
+  public_subnets=module.vpc.public_subnets
 }
 ```
 
@@ -55,15 +55,15 @@ Creates a number of subnets and divides them in different parts based on the inp
 ```hcl
 module "public_lb_subnets" {
   source             = "../subnets"
-  num_subnets        = "${var.amount_public_lb_subnets}"
+  num_subnets        = var.amount_public_lb_subnets
   visibility         = "public"
   role               = "lb"
-  cidr               = "${var.cidr_block}"
+  cidr               = var.cidr_block
   netnum             = 0
-  vpc_id             = "${aws_vpc.main.id}"
-  aws_region         = "${var.aws_region}"
-  environment        = "${var.environment}"
-  project            = "${var.project}"
+  vpc_id             = aws_vpc.main.id
+  aws_region         = var.aws_region
+  environment        = var.environment
+  project            = var.project
   tags               = { "KubernetesCluster" = "test" }
 }
 ```
@@ -175,9 +175,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_all" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/all"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
 }
 ```
 
@@ -206,9 +206,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_icinga" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/icinga_satellite"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
   icinga_master_ip                 = "123.234.123.234/32"
 }
 ```
@@ -237,9 +237,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_icinga" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/puppet"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
   puppet_master_ip                 = "123.234.123.234/32"
 }
 ```
@@ -267,8 +267,8 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_web_public" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/web_public"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
 }
 ```
