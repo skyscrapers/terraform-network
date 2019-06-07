@@ -26,7 +26,7 @@ module "public_nat-bastion_subnets" {
   project          = var.project
   tags             = merge(var.extra_tags_public_nat-bastion, var.tags)
   route_tables     = aws_route_table.public.*.id
-  num_route_tables = "1"
+  num_route_tables = 1
 }
 
 module "public_lb_subnets" {
@@ -41,7 +41,7 @@ module "public_lb_subnets" {
   project          = var.project
   tags             = merge(var.extra_tags_public_lb, var.tags)
   route_tables     = aws_route_table.public.*.id
-  num_route_tables = "1"
+  num_route_tables = 1
 }
 
 module "private_app_subnets" {

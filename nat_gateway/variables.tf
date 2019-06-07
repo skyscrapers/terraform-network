@@ -3,7 +3,8 @@ variable "private_route_tables" {
 }
 
 variable "number_nat_gateways" {
-  default = "1"
+  type    = number
+  default = 1
 }
 
 variable "public_subnets" {

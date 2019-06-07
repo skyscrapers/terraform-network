@@ -47,6 +47,6 @@ variable "route_tables" {
 }
 
 variable "num_route_tables" {
-  default = "0"
+  type    = number
+  default = 0
 }
-
