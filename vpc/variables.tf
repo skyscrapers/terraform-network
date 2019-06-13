@@ -3,28 +3,33 @@ variable "cidr_block" {
 }
 
 variable "amount_public_nat-bastion_subnets" {
+  type        = number
   description = "Amount of subnets you need"
-  default     = "1"
+  default     = 1
 }
 
 variable "amount_public_lb_subnets" {
+  type        = number
   description = "Amount of subnets you need"
-  default     = "3"
+  default     = 3
 }
 
 variable "amount_private_app_subnets" {
+  type        = number
   description = "Amount of subnets you need"
-  default     = "3"
+  default     = 3
 }
 
 variable "amount_private_db_subnets" {
+  type        = number
   description = "Amount of subnets you need"
-  default     = "3"
+  default     = 3
 }
 
 variable "amount_private_management_subnets" {
+  type        = number
   description = "Amount of subnets you need"
-  default     = "0"
+  default     = 0
 }
 
 variable "environment" {
@@ -37,8 +42,9 @@ variable "project" {
 }
 
 variable "number_private_rt" {
+  type        = number
   description = "The desired number of private route tables. In case we want one per AZ we can change this value."
-  default     = "1"
+  default     = 1
 }
 
 variable "netnum_public_lb" {
@@ -67,43 +73,43 @@ variable "netnum_public_nat-bastion" {
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   description = "Optional Tags"
   default     = {}
 }
 
 variable "extra_tags_vpc" {
-  type        = "map"
+  type        = map(string)
   description = "VPC extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_nat-bastion" {
-  type        = "map"
+  type        = map(string)
   description = "Public nat/bastion subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_public_lb" {
-  type        = "map"
+  type        = map(string)
   description = "Public load balancer subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_app" {
-  type        = "map"
+  type        = map(string)
   description = "Private app subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_db" {
-  type        = "map"
+  type        = map(string)
   description = "Private database subnets extra tags"
   default     = {}
 }
 
 variable "extra_tags_private_management" {
-  type        = "map"
+  type        = map(string)
   description = "Private management subnets extra tags"
   default     = {}
 }

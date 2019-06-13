@@ -8,9 +8,9 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 
 ### Available variables
 
-* [`private_route_tables`]: List(required): List of private route tables that require the nat gateway [NOTE the number of nat gateways should match the number of private routes]
-* [`number_nat_gateways`]: String(optional):  Number of nat gateways required
-* [`public_subnets`]: List(required): The subnets where we are going to create/deploy the NAT gateways
+* [`private_route_tables`]: List(string)(required): List of private route tables that require the nat gateway [NOTE the number of nat gateways should match the number of private routes]
+* [`number_nat_gateways`]: Number(optional):  Number of nat gateways required
+* [`public_subnets`]: List(string)(required): The subnets where we are going to create/deploy the NAT gateways
 * [`tags`]: Map(optional): optional tags
 
 ### Output
@@ -22,8 +22,8 @@ Creates a nat gateway and automatically adds a route table to the route tables p
 ```hcl
 module "nat_gateway" {
   source = "nat_gateway"
-  private_route_tables="${module.vpc.private_rts}"
-  public_subnets="${module.vpc.public_subnets}"
+  private_route_tables=module.vpc.private_rts
+  public_subnets=module.vpc.public_subnets
 }
 ```
 
@@ -43,8 +43,8 @@ Creates a number of subnets and divides them in different parts based on the inp
 * [`project`]: String(required): the name of the project these subnets belong to
 * [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
 * [`num_subnets`]: String(optional): default to 3. the number of subnets we want to create
-* [`route_tables`]: List(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected sing a standard mod algorithm
-* [`num_route_tables`]: String(optional): default to 0. the number of route tables passed in route_tables. NOTE: this is due to a bug in terraform that cannot iterate over count param
+* [`route_tables`]: List(string)(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected sing a standard mod algorithm
+* [`num_route_tables`]: Number(optional): default to 0. the number of route tables passed in route_tables. NOTE: this is due to a bug in terraform that cannot iterate over count param
 
 ### Output
 
@@ -55,15 +55,15 @@ Creates a number of subnets and divides them in different parts based on the inp
 ```hcl
 module "public_lb_subnets" {
   source             = "../subnets"
-  num_subnets        = "${var.amount_public_lb_subnets}"
+  num_subnets        = var.amount_public_lb_subnets
   visibility         = "public"
   role               = "lb"
-  cidr               = "${var.cidr_block}"
+  cidr               = var.cidr_block
   netnum             = 0
-  vpc_id             = "${aws_vpc.main.id}"
-  aws_region         = "${var.aws_region}"
-  environment        = "${var.environment}"
-  project            = "${var.project}"
+  vpc_id             = aws_vpc.main.id
+  aws_region         = var.aws_region
+  environment        = var.environment
+  project            = var.project
   tags               = { "KubernetesCluster" = "test" }
 }
 ```
@@ -83,11 +83,11 @@ It will also create the required route tables for the private subnets. The priva
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| amount\_private\_app\_subnets | Amount of subnets you need | string | `"3"` | no |
-| amount\_private\_db\_subnets | Amount of subnets you need | string | `"3"` | no |
-| amount\_private\_management\_subnets | Amount of subnets you need | string | `"0"` | no |
-| amount\_public\_lb\_subnets | Amount of subnets you need | string | `"3"` | no |
-| amount\_public\_nat-bastion\_subnets | Amount of subnets you need | string | `"1"` | no |
+| amount\_private\_app\_subnets | Amount of subnets you need | number | `3` | no |
+| amount\_private\_db\_subnets | Amount of subnets you need | number | `3` | no |
+| amount\_private\_management\_subnets | Amount of subnets you need | number | `0` | no |
+| amount\_public\_lb\_subnets | Amount of subnets you need | number | `3` | no |
+| amount\_public\_nat-bastion\_subnets | Amount of subnets you need | number | `1` | no |
 | cidr\_block | CIDR block you want to have in your VPC | string | n/a | yes |
 | environment | How do you want to call your environment, this is helpful if you have more than 1 VPC. | string | `"production"` | no |
 | extra\_tags\_private\_app | Private app subnets extra tags | map | `<map>` | no |
@@ -101,7 +101,7 @@ It will also create the required route tables for the private subnets. The priva
 | netnum\_private\_management | First number of subnet to start of for private_management subnets | string | `"200"` | no |
 | netnum\_public\_lb | First number of subnet to start of for public_lb subnets | string | `"10"` | no |
 | netnum\_public\_nat-bastion | First number of subnet to start of for public_nat-bastion subnets | string | `"0"` | no |
-| number\_private\_rt | The desired number of private route tables. In case we want one per AZ we can change this value. | string | `"1"` | no |
+| number\_private\_rt | The desired number of private route tables. In case we want one per AZ we can change this value. | number | `1` | no |
 | project | The current project | string | n/a | yes |
 | tags | Optional Tags | map | `<map>` | no |
 
@@ -175,9 +175,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_all" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/all"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
 }
 ```
 
@@ -206,9 +206,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_icinga" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/icinga_satellite"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
   icinga_master_ip                 = "123.234.123.234/32"
 }
 ```
@@ -237,9 +237,9 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_icinga" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/puppet"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
   puppet_master_ip                 = "123.234.123.234/32"
 }
 ```
@@ -267,8 +267,8 @@ to make the creation and adaptation of security groups much more modular.
 ```hcl
 module "securitygroup_web_public" {
   source                           = "github.com/skyscrapers/terraform-network//securitygroups/web_public"
-  vpc_id                           = "${module.vpc.vpc_id}"
-  project                          = "${var.project}"
-  environment                      = "${var.environment}"
+  vpc_id                           = module.vpc.vpc_id
+  project                          = var.project
+  environment                      = var.environment
 }
 ```

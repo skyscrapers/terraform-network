@@ -14,3 +14,4 @@ variable "project" {
 variable "puppet_master_ip" {
   description = "IP of the Puppet master, in CIDR/32 notation"
 }
+

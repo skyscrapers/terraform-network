@@ -19,3 +19,4 @@ variable "internal_sg_id" {
   description = "The Icinga satellite will be able to access this security group through NRPE, if provided."
   default     = ""
 }
+

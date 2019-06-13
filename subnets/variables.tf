@@ -1,4 +1,5 @@
-variable "cidr" {}
+variable "cidr" {
+}
 
 variable "newbits" {
   description = "see https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_"
@@ -23,7 +24,7 @@ variable "visibility" {
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   description = "Optional Tags"
   default     = {}
 }
@@ -41,10 +42,11 @@ variable "num_subnets" {
 }
 
 variable "route_tables" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "num_route_tables" {
-  default = "0"
+  type    = number
+  default = 0
 }
