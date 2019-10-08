@@ -57,38 +57,45 @@ variable "number_private_rt" {
 }
 
 variable "netnum_public_lb" {
+  type        = number
   description = "First number of subnet to start of for public_lb subnets"
-  default     = "10"
+  default     = 10
 }
 
 variable "netnum_private_app" {
+  type        = number
   description = "First number of subnet to start of for private_app subnets"
-  default     = "20"
+  default     = 20
 }
 
 variable "netnum_private_db" {
+  type        = number
   description = "First number of subnet to start of for private_db subnets"
-  default     = "30"
+  default     = 30
 }
 
 variable "newbits_private_k8s" {
+  type        = number
   description = "Newbits to use as additional bits with which to extend the `cidr_block` for private_k8s subnets"
-  default     = "4"
+  default     = 4
 }
 
 variable "netnum_private_k8s" {
+  type        = number
   description = "Netnum to use for determining the offset for private_k8s subnets. Using the default of `8` while considering `newbits = 4`, with an example `cidr_block = 10.0.0.0/16`, the first subnet would be: `10.0.128.0/20`"
-  default     = "8"
+  default     = 8
 }
 
 variable "netnum_private_management" {
+  type        = number
   description = "First number of subnet to start of for private_management subnets"
-  default     = "200"
+  default     = 200
 }
 
 variable "netnum_public_nat-bastion" {
+  type        = number
   description = "First number of subnet to start of for public_nat-bastion subnets"
-  default     = "0"
+  default     = 0
 }
 
 variable "tags" {
