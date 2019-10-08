@@ -1,4 +1,16 @@
+variable "environment" {
+  type        = string
+  description = "How do you want to call your environment, this is helpful if you have more than 1 VPC."
+  default     = "production"
+}
+
+variable "project" {
+  type        = string
+  description = "The current project"
+}
+
 variable "cidr_block" {
+  type        = string
   description = "CIDR block you want to have in your VPC"
 }
 
@@ -26,19 +38,16 @@ variable "amount_private_db_subnets" {
   default     = 3
 }
 
-variable "amount_private_management_subnets" {
+variable "amount_private_k8s_subnets" {
   type        = number
   description = "Amount of subnets you need"
   default     = 0
 }
 
-variable "environment" {
-  description = "How do you want to call your environment, this is helpful if you have more than 1 VPC."
-  default     = "production"
-}
-
-variable "project" {
-  description = "The current project"
+variable "amount_private_management_subnets" {
+  type        = number
+  description = "Amount of subnets you need"
+  default     = 0
 }
 
 variable "number_private_rt" {
@@ -60,6 +69,16 @@ variable "netnum_private_app" {
 variable "netnum_private_db" {
   description = "First number of subnet to start of for private_db subnets"
   default     = "30"
+}
+
+variable "newbits_private_k8s" {
+  description = "Newbits to use as additional bits with which to extend the `cidr_block` for private_k8s subnets"
+  default     = "4"
+}
+
+variable "netnum_private_k8s" {
+  description = "Netnum to use for determining the offset for private_k8s subnets. Using the default of `8` while considering `newbits = 4`, with an example `cidr_block = 10.0.0.0/16`, the first subnet would be: `10.0.128.0/20`"
+  default     = "8"
 }
 
 variable "netnum_private_management" {
@@ -105,6 +124,12 @@ variable "extra_tags_private_app" {
 variable "extra_tags_private_db" {
   type        = map(string)
   description = "Private database subnets extra tags"
+  default     = {}
+}
+
+variable "extra_tags_private_k8s" {
+  type        = map(string)
+  description = "Private K8s subnets extra tags"
   default     = {}
 }
 

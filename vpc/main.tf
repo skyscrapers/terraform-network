@@ -74,6 +74,22 @@ module "private_db_subnets" {
   num_route_tables = var.number_private_rt
 }
 
+module "private_k8s_subnets" {
+  source           = "../subnets"
+  num_subnets      = var.amount_private_k8s_subnets
+  visibility       = "private"
+  role             = "k8s"
+  cidr             = var.cidr_block
+  newbits          = var.newbits_private_k8s
+  netnum           = var.netnum_private_k8s
+  vpc_id           = aws_vpc.main.id
+  environment      = var.environment
+  project          = var.project
+  tags             = merge(var.extra_tags_private_k8s, var.tags)
+  route_tables     = aws_route_table.private.*.id
+  num_route_tables = var.number_private_rt
+}
+
 module "private_management_subnets" {
   source           = "../subnets"
   num_subnets      = var.amount_private_management_subnets

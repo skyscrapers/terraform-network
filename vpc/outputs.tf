@@ -23,6 +23,11 @@ output "private_db_subnets" {
   value       = module.private_db_subnets.ids
 }
 
+output "private_k8s_subnets" {
+  description = "List of the private_k8s subnets id created"
+  value       = module.private_k8s_subnets.ids
+}
+
 output "private_management_subnets" {
   description = "List of the private_management subnets id created"
   value       = module.private_management_subnets.ids
