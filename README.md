@@ -85,6 +85,7 @@ It will also create the required route tables for the private subnets. The priva
 |------|-------------|:----:|:-----:|:-----:|
 | amount\_private\_app\_subnets | Amount of subnets you need | number | `3` | no |
 | amount\_private\_db\_subnets | Amount of subnets you need | number | `3` | no |
+| amount\_private\_k8s\_subnets | Amount of subnets you need | number | `0` | no |
 | amount\_private\_management\_subnets | Amount of subnets you need | number | `0` | no |
 | amount\_public\_lb\_subnets | Amount of subnets you need | number | `3` | no |
 | amount\_public\_nat-bastion\_subnets | Amount of subnets you need | number | `1` | no |
@@ -92,15 +93,18 @@ It will also create the required route tables for the private subnets. The priva
 | environment | How do you want to call your environment, this is helpful if you have more than 1 VPC. | string | `"production"` | no |
 | extra\_tags\_private\_app | Private app subnets extra tags | map | `<map>` | no |
 | extra\_tags\_private\_db | Private database subnets extra tags | map | `<map>` | no |
+| extra\_tags\_private\_k8s | Private K8s subnets extra tags | map | `<map>` | no |
 | extra\_tags\_private\_management | Private management subnets extra tags | map | `<map>` | no |
 | extra\_tags\_public\_lb | Public load balancer subnets extra tags | map | `<map>` | no |
 | extra\_tags\_public\_nat-bastion | Public nat/bastion subnets extra tags | map | `<map>` | no |
 | extra\_tags\_vpc | VPC extra tags | map | `<map>` | no |
-| netnum\_private\_app | First number of subnet to start of for private_app subnets | string | `"20"` | no |
-| netnum\_private\_db | First number of subnet to start of for private_db subnets | string | `"30"` | no |
-| netnum\_private\_management | First number of subnet to start of for private_management subnets | string | `"200"` | no |
-| netnum\_public\_lb | First number of subnet to start of for public_lb subnets | string | `"10"` | no |
-| netnum\_public\_nat-bastion | First number of subnet to start of for public_nat-bastion subnets | string | `"0"` | no |
+| netnum\_private\_app | First number of subnet to start of for private_app subnets | number | `20` | no |
+| netnum\_private\_db | First number of subnet to start of for private_db subnets | number | `30` | no |
+| netnum\_private\_k8s | Netnum to use for determining the offset for private_k8s subnets. Using the default of `8` while considering `newbits = 4`, with an example `cidr_block = 10.0.0.0/16`, the first subnet would be: `10.0.128.0/20` | number | `8` | no |
+| netnum\_private\_management | First number of subnet to start of for private_management subnets | number | `200` | no |
+| netnum\_public\_lb | First number of subnet to start of for public_lb subnets | number | `10` | no |
+| netnum\_public\_nat-bastion | First number of subnet to start of for public_nat-bastion subnets | number | `0` | no |
+| newbits\_private\_k8s | Newbits to use as additional bits with which to extend the `cidr_block` for private_k8s subnets | number | `4` | no |
 | number\_private\_rt | The desired number of private route tables. In case we want one per AZ we can change this value. | number | `1` | no |
 | project | The current project | string | n/a | yes |
 | tags | Optional Tags | map | `<map>` | no |
@@ -112,6 +116,7 @@ It will also create the required route tables for the private subnets. The priva
 | default\_network\_acl\_id | Id of the default network acl |
 | private\_app\_subnets | List of the private_app subnets id created |
 | private\_db\_subnets | List of the private_db subnets id created |
+| private\_k8s\_subnets | List of the private_k8s subnets id created |
 | private\_management\_subnets | List of the private_management subnets id created |
 | private\_rts | List of the ids of the private route tables created |
 | public\_lb\_subnets | List of the public_lb subnets id created |
