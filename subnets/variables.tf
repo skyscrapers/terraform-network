@@ -1,52 +1,71 @@
 variable "cidr" {
+  description = "CIDR block you use in your VPC"
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets)"
+  type        = list(string)
+  default     = null
 }
 
 variable "newbits" {
-  description = "see https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_"
+  description = "Newbits to use for generating the subnets. For more information, see the [cidrsubnet function docs](https://www.terraform.io/docs/configuration/functions/cidrsubnet.html)"
+  type        = number
   default     = 8
 }
 
 variable "netnum" {
-  description = "first number of subnet to start of (ex I want a 10.1,10.2,10.3 subnet I specify 1) https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_"
+  description = "Netnum to use for generating the EKS worker subnets. For more information, see the [cidrsubnet function docs](https://www.terraform.io/docs/configuration/functions/cidrsubnet.html)"
+  type        = number
   default     = 0
 }
 
 variable "vpc_id" {
-  description = "ID of the VPC where we want to deploy the subnet in"
+  description = "ID of the VPC where we want to deploy the subnet"
+  type        = string
 }
 
 variable "role" {
-  description = "Role of the subnets. Example values are `app`, `lb` and `db`"
+  description = "Role for the subnets. Example values are `app`, `lb`, `db`, ..."
+  type        = string
 }
 
 variable "visibility" {
-  description = "Visibility of this subnet. Valid values are `public` and `private`"
+  description = "Visibility of this subnet. Valid values are `public` or `private`"
+  type        = string
 }
 
 variable "tags" {
-  type        = map(string)
   description = "Optional Tags"
+  type        = map(string)
   default     = {}
 }
 
 variable "project" {
   description = "Project name"
+  type        = string
 }
 
 variable "environment" {
   description = "Environment name"
+  type        = string
 }
 
 variable "num_subnets" {
-  default = "3"
+  description = "Amount of subnets to create"
+  type        = number
+  default     = 3
 }
 
 variable "route_tables" {
-  type    = list(string)
-  default = []
+  description = "Route tables to attach the subnets to"
+  type        = list(string)
+  default     = []
 }
 
 variable "num_route_tables" {
-  type    = number
-  default = 0
+  description = "Amount of route tables to attach the subnets to"
+  type        = number
+  default     = 0
 }

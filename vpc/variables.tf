@@ -2,6 +2,12 @@ variable "cidr_block" {
   description = "CIDR block you want to have in your VPC"
 }
 
+variable "availability_zones" {
+  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets)"
+  type        = list(string)
+  default     = null
+}
+
 variable "amount_public_nat-bastion_subnets" {
   type        = number
   description = "Amount of subnets you need"
