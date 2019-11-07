@@ -31,24 +31,15 @@ module "nat_gateway" {
 
 Creates a number of subnets and divides them in different parts based on the input params
 
-### Available variables
+### Inputs
 
-* [`cidr`]: String(required): the CIDR to be divided into subnets  
-* [`newbits`]: String(optional): default to 8. For details see https://www.terraform.io/docs/configuration/interpolation.html#cidrsubnet_iprange_newbits_netnum_
-* [`netnum`]: String(optional): default to 0. First number of subnet to start of (ex I want a 10.1,10.2,10.3 subnet I specify 1)
-* [`vpc_id`]: String(required): the VPC ID where we want to create the subnets
-* [`role`]: String(required): the role of the subnets. Example values are `lb`, `db` and `app`.
-* [`visibility`]: String(required): the visibility of the subnets. Valid values are `public` and `private`
-* [`tags`]: Map(optional): optional tags
-* [`project`]: String(required): the name of the project these subnets belong to
-* [`environment`]: String(required): the name of the environment these subnets belong to (prod,stag,dev)
-* [`num_subnets`]: String(optional): default to 3. the number of subnets we want to create
-* [`route_tables`]: List(string)(optional): the list of route tables to associate to the created subnet. This will associate the route table to the created subnet sequentially. If the subnet number is greater than the number of route tables, the route table will be selected sing a standard mod algorithm
-* [`num_route_tables`]: Number(optional): default to 0. the number of route tables passed in route_tables. NOTE: this is due to a bug in terraform that cannot iterate over count param
+**TODO** once terraform-docs properly supports 0.12...
 
-### Output
+### Outputs
 
-* [`ids`]: List: the ids of the subnets created
+| Name | Description |
+|------|-------------|
+| ids  | the ids of the subnets created |
 
 ### Example
 
@@ -79,10 +70,11 @@ This module will create a vpc with the option to specify 4 types of subnets:
 
 It will also create the required route tables for the private subnets. The private_app and private_db subnets are private subnets.
 
-### Available variables
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| availability\_zones | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | list(string) | `null` | no |
 | amount\_private\_app\_subnets | Amount of subnets you need | number | `3` | no |
 | amount\_private\_db\_subnets | Amount of subnets you need | number | `3` | no |
 | amount\_private\_management\_subnets | Amount of subnets you need | number | `0` | no |
@@ -105,7 +97,7 @@ It will also create the required route tables for the private subnets. The priva
 | project | The current project | string | n/a | yes |
 | tags | Optional Tags | map | `<map>` | no |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
