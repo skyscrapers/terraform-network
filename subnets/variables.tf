@@ -69,3 +69,9 @@ variable "num_route_tables" {
   type        = number
   default     = 0
 }
+
+variable "map_public_ip_on_launch" {
+  description = "Specify true to indicate that instances launched into the subnets should be assigned a public IP address"
+  type        = bool
+  default     = false
+}

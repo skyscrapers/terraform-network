@@ -7,10 +7,11 @@ locals {
 }
 
 resource "aws_subnet" "subnets" {
-  count             = var.num_subnets
-  vpc_id            = var.vpc_id
-  cidr_block        = cidrsubnet(var.cidr, var.newbits, var.netnum + count.index)
-  availability_zone = local.availability_zones[count.index]
+  count                   = var.num_subnets
+  vpc_id                  = var.vpc_id
+  cidr_block              = cidrsubnet(var.cidr, var.newbits, var.netnum + count.index)
+  availability_zone       = local.availability_zones[count.index]
+  map_public_ip_on_launch = var.map_public_ip_on_launch
 
   tags = merge(
     var.tags,
