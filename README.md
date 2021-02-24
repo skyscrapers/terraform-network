@@ -145,6 +145,56 @@ terraform state mv module.vpc.aws_route_table_association.private_db[1] module.v
 terraform state mv module.vpc.aws_route_table_association.private_db[2] module.vpc.module.private_db_subnets.aws_route_table_association.subnet_association[2]
 ```
 
+## vpc_peering
+
+Module to create a VPC peering connection between two VPCs. It creates the needed resources on both ends of the peering connection, thus it requires two different AWS providers.
+
+It also creates the routing between the two VPCs if the route tables are provided.
+
+### Requirements
+
+No requirements.
+
+### Providers
+
+| Name | Version |
+|------|---------|
+| aws.source | n/a |
+| aws.target | n/a |
+
+### Modules
+
+No Modules.
+
+### Resources
+
+| Name |
+|------|
+| [aws_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) |
+| [aws_vpc_peering_connection_accepter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter) |
+| [aws_vpc_peering_connection_options](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_options) |
+| [aws_vpc_peering_connection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection) |
+| [aws_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) |
+
+### Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| source_name | Name of the source VPC | `string` | n/a | yes |
+| source_route_table_ids | List of route table IDs from the source VPC that should be routable to the target VPC | `list(string)` | n/a | yes |
+| source_vpc_id | ID of the source VPC | `string` | n/a | yes |
+| target_account_id | AWS account id of the target VPC | `string` | n/a | yes |
+| target_name | Name of the target VPC | `string` | n/a | yes |
+| target_route_table_ids | List of route table IDs from the target VPC that should be routable to the source VPC | `list(string)` | n/a | yes |
+| target_vpc_id | ID of the target VPC | `string` | n/a | yes |
+| tags | AWS tags to apply to the created resources | `map(string)` | <pre>{<br>  "installer": "terraform",<br>  "maintainer": "skyscrapers"<br>}</pre> | no |
+
+### Outputs
+
+| Name | Description |
+|------|-------------|
+| vpc_peering_id | ID of the VPC peering connection |
+
 ## securitygroups/all
 
 This module creates and exposes a reusable security group called `sg-all`.
