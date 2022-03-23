@@ -16,9 +16,7 @@ resource "aws_subnet" "subnets" {
   tags = merge(
     var.tags,
     {
-      "Name"             = "${var.project}-${var.visibility}-${var.role}-${local.availability_zones[count.index]}"
-      "Environment"      = var.environment
-      "Project"          = var.project
+      "Name"             = "${var.name}-${var.visibility}-${var.role}-${local.availability_zones[count.index]}"
       "Role"             = var.role
       "Visibility"       = var.visibility
       "AvailabilityZone" = local.availability_zones[count.index]

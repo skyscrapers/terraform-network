@@ -42,13 +42,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "project" {
-  description = "Project name"
-  type        = string
-}
-
-variable "environment" {
-  description = "Environment name"
+variable "name" {
+  description = "Name"
   type        = string
 }
 
