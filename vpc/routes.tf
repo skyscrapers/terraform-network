@@ -5,9 +5,7 @@ resource "aws_route_table" "public" {
   tags = merge(
     var.tags,
     {
-      "Name"        = "${var.project} public route table"
-      "Environment" = var.environment
-      "Project"     = var.project
+      "Name" = "${var.name}-public"
     },
   )
 }
@@ -26,10 +24,7 @@ resource "aws_route_table" "private" {
   tags = merge(
     var.tags,
     {
-      "Name"        = "${var.project} private route table"
-      "Environment" = var.environment
-      "Project"     = var.project
+      "Name" = "${var.name}-private"
     },
   )
 }
-

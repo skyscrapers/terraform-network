@@ -1,13 +1,7 @@
 resource "aws_security_group" "sg_icinga_satellite" {
-  name        = "sg_icinga_satellite_${var.project}_${var.environment}"
+  name        = var.name
   description = "Icinga Satellite Security Group"
   vpc_id      = var.vpc_id
-
-  tags = {
-    Name        = "${var.project}-${var.environment}-sg_icinga_sattelite"
-    Environment = var.environment
-    Project     = var.project
-  }
 }
 
 # Allow incoming NRPE check from icinga2

@@ -38,13 +38,9 @@ variable "amount_private_management_subnets" {
   default     = 0
 }
 
-variable "environment" {
-  description = "How do you want to call your environment, this is helpful if you have more than 1 VPC."
+variable "name" {
+  description = "Main name for your your VPC, subnets, etc."
   default     = "production"
-}
-
-variable "project" {
-  description = "The current project"
 }
 
 variable "number_private_rt" {

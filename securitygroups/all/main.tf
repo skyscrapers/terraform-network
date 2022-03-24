@@ -4,15 +4,9 @@ data "aws_vpc" "vpc_info" {
 
 # Create common security group
 resource "aws_security_group" "sg_all" {
-  name        = "sg_all_${var.project}_${var.environment}"
+  name        = var.name
   description = "General security used on all servers"
   vpc_id      = var.vpc_id
-
-  tags = {
-    Name        = "${var.project}-${var.environment}-sg_all"
-    Environment = var.environment
-    Project     = var.project
-  }
 }
 
 # Allow NTP connections to the outside
