@@ -26,16 +26,6 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "role" {
-  description = "Role for the subnets. Example values are `app`, `lb`, `db`, ..."
-  type        = string
-}
-
-variable "visibility" {
-  description = "Visibility of this subnet. Valid values are `public` or `private`"
-  type        = string
-}
-
 variable "tags" {
   description = "Optional Tags"
   type        = map(string)

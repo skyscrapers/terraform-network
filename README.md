@@ -12,12 +12,12 @@ Terraform modules networking related vpc,subnets,route tables..
     - [Outputs](#outputs)
     - [Example](#example)
   - [Subnets](#subnets)
-    - [Requirements](#requirements-1)
-    - [Providers](#providers-1)
-    - [Modules](#modules-1)
-    - [Resources](#resources-1)
-    - [Inputs](#inputs-1)
-    - [Outputs](#outputs-1)
+  - [Requirements](#requirements-1)
+  - [Providers](#providers-1)
+  - [Modules](#modules-1)
+  - [Resources](#resources-1)
+  - [Inputs](#inputs-1)
+  - [Outputs](#outputs-1)
     - [Example](#example-1)
   - [vpc](#vpc)
     - [Requirements](#requirements-2)
@@ -105,21 +105,21 @@ module "nat_gateway" {
 
 Creates a number of subnets and divides them in different parts based on the input params
 
-### Requirements
+## Requirements
 
 No requirements.
 
-### Providers
+## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
 
-### Modules
+## Modules
 
 No modules.
 
-### Resources
+## Resources
 
 | Name | Type |
 |------|------|
@@ -127,14 +127,12 @@ No modules.
 | [aws_subnet.subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
-### Inputs
+## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr"></a> [cidr](#input_cidr) | CIDR block you use in your VPC | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input_name) | Name | `string` | n/a | yes |
-| <a name="input_role"></a> [role](#input_role) | Role for the subnets. Example values are `app`, `lb`, `db`, ... | `string` | n/a | yes |
-| <a name="input_visibility"></a> [visibility](#input_visibility) | Visibility of this subnet. Valid values are `public` or `private` | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc_id](#input_vpc_id) | ID of the VPC where we want to deploy the subnet | `string` | n/a | yes |
 | <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | `list(string)` | `null` | no |
 | <a name="input_map_public_ip_on_launch"></a> [map_public_ip_on_launch](#input_map_public_ip_on_launch) | Specify true to indicate that instances launched into the subnets should be assigned a public IP address | `bool` | `false` | no |
@@ -145,7 +143,7 @@ No modules.
 | <a name="input_route_tables"></a> [route_tables](#input_route_tables) | Route tables to attach the subnets to | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input_tags) | Optional Tags | `map(string)` | `{}` | no |
 
-### Outputs
+## Outputs
 
 | Name | Description |
 |------|-------------|
@@ -156,7 +154,7 @@ No modules.
 ```hcl
 module "public_lb_subnets" {
   source      = "../subnets"
-  name        = "test"
+  name        = "test-public-lb"
   num_subnets = var.amount_public_lb_subnets
   visibility  = "public"
   role        = "lb"
@@ -164,7 +162,12 @@ module "public_lb_subnets" {
   netnum      = 0
   vpc_id      = aws_vpc.main.id
   aws_region  = var.aws_region
-  tags        = { "KubernetesCluster" = "test" }
+
+  tags = {
+    visibility        = "public"
+    role              = "lb"
+    KubernetesCluster = "test"
+  }
 }
 ```
 
