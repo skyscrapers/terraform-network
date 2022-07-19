@@ -36,4 +36,5 @@ variable "source_route_table_ids" {
 variable "tags" {
   type        = map(string)
   description = "AWS tags to apply to the created resources"
+  default     = {}
 }
