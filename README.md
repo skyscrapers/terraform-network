@@ -308,7 +308,7 @@ No modules.
 | <a name="input_target_name"></a> [target_name](#input_target_name) | Name of the target VPC | `string` | n/a | yes |
 | <a name="input_target_route_table_ids"></a> [target_route_table_ids](#input_target_route_table_ids) | List of route table IDs from the target VPC that should be routable to the source VPC | `list(string)` | n/a | yes |
 | <a name="input_target_vpc_id"></a> [target_vpc_id](#input_target_vpc_id) | ID of the target VPC | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input_tags) | AWS tags to apply to the created resources | `map(string)` | <pre>{<br>  "installer": "terraform",<br>  "maintainer": "skyscrapers"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input_tags) | AWS tags to apply to the created resources | `map(string)` | `{}` | no |
 
 ### Outputs
 
