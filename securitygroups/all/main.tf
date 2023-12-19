@@ -7,6 +7,10 @@ resource "aws_security_group" "sg_all" {
   name        = var.name
   description = "General security used on all servers"
   vpc_id      = var.vpc_id
+
+  lifecycle {
+    ignore_changes = [name, vpc_id]
+  }
 }
 
 # Allow NTP connections to the outside
