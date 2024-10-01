@@ -27,7 +27,7 @@ Terraform modules networking related vpc,subnets,route tables..
     - [Inputs](#inputs-2)
     - [Outputs](#outputs-2)
     - [Example](#example-2)
-  - [vpc_peering](#vpc_peering)
+  - [vpc\_peering](#vpc_peering)
     - [Requirements](#requirements-3)
     - [Providers](#providers-3)
     - [Modules](#modules-3)
@@ -36,11 +36,11 @@ Terraform modules networking related vpc,subnets,route tables..
     - [Outputs](#outputs-3)
   - [securitygroups/all](#securitygroupsall)
     - [Example](#example-3)
-  - [securitygroups/icinga_satellite](#securitygroupsicinga_satellite)
+  - [securitygroups/icinga\_satellite](#securitygroupsicinga_satellite)
     - [Example](#example-4)
   - [securitygroups/puppet](#securitygroupspuppet)
     - [Example](#example-5)
-  - [securitygroups/web_public](#securitygroupsweb_public)
+  - [securitygroups/web\_public](#securitygroupsweb_public)
     - [Example](#example-6)
   - [Migration](#migration)
     - [From v4 to v5](#from-v4-to-v5)
@@ -309,6 +309,7 @@ No modules.
 | <a name="input_target_route_table_ids"></a> [target_route_table_ids](#input_target_route_table_ids) | List of route table IDs from the target VPC that should be routable to the source VPC | `list(string)` | n/a | yes |
 | <a name="input_target_vpc_id"></a> [target_vpc_id](#input_target_vpc_id) | ID of the target VPC | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input_tags) | AWS tags to apply to the created resources | `map(string)` | `{}` | no |
+| <a name="input_target_region"></a> [target_region](#input_target_region) | AWS region of the target VPC (optional) | `string` | `null` | no |
 
 ### Outputs
 
