@@ -1,6 +1,7 @@
 resource "aws_vpc_peering_connection" "peering" {
   provider      = aws.source
   peer_owner_id = var.target_account_id
+  peer_region   = var.target_region
   peer_vpc_id   = var.target_vpc_id
   vpc_id        = var.source_vpc_id
   auto_accept   = false

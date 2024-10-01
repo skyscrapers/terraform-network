@@ -3,6 +3,12 @@ variable "target_account_id" {
   description = "AWS account id of the target VPC"
 }
 
+variable "target_region" {
+  type        = string
+  description = "AWS region of the target VPC (optional)"
+  default     = null
+}
+
 variable "target_vpc_id" {
   type        = string
   description = "ID of the target VPC"
