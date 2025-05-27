@@ -1,3 +1,12 @@
+locals {
+  availability_zones = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
+  nat_gateway_count  = var.single_nat_gateway ? 1 : length(local.availability_zones)
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   enable_dns_support   = true
@@ -12,27 +21,27 @@ resource "aws_vpc" "main" {
   )
 }
 
-module "public_nat-bastion_subnets" {
+module "public_nat_subnets" {
   source             = "../subnets"
-  name               = "${var.name}-public-nat-bastion"
-  availability_zones = var.availability_zones
-  num_subnets        = var.amount_public_nat-bastion_subnets
+  name               = "${var.name}-public-nat"
+  availability_zones = local.availability_zones
+  num_subnets        = local.nat_gateway_count
   cidr               = var.cidr_block
-  netnum             = var.netnum_public_nat-bastion
+  netnum             = var.netnum_public_nat
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.public.*.id
   num_route_tables   = 1
 
   tags = merge(var.extra_tags_public_nat-bastion, var.tags, {
     visibility = "public"
-    role       = "nat-bastion"
+    role       = "nat"
   })
 }
 
 module "public_lb_subnets" {
   source             = "../subnets"
   name               = "${var.name}-public-lb"
-  availability_zones = var.availability_zones
+  availability_zones = local.availability_zones
   num_subnets        = var.amount_public_lb_subnets
   cidr               = var.cidr_block
   netnum             = var.netnum_public_lb
@@ -49,7 +58,7 @@ module "public_lb_subnets" {
 module "private_app_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-app"
-  availability_zones = var.availability_zones
+  availability_zones = local.availability_zones
   num_subnets        = var.amount_private_app_subnets
   cidr               = var.cidr_block
   netnum             = var.netnum_private_app
@@ -66,7 +75,7 @@ module "private_app_subnets" {
 module "private_db_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-db"
-  availability_zones = var.availability_zones
+  availability_zones = local.availability_zones
   num_subnets        = var.amount_private_db_subnets
   cidr               = var.cidr_block
   netnum             = var.netnum_private_db
@@ -83,7 +92,7 @@ module "private_db_subnets" {
 module "private_management_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-management"
-  availability_zones = var.availability_zones
+  availability_zones = local.availability_zones
   num_subnets        = var.amount_private_management_subnets
   cidr               = var.cidr_block
   netnum             = var.netnum_private_management

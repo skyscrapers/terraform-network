@@ -1,3 +1,8 @@
+variable "name" {
+  description = "Main name for your your VPC, subnets, etc."
+  default     = "production"
+}
+
 variable "cidr_block" {
   description = "CIDR block you want to have in your VPC"
 }
@@ -8,10 +13,16 @@ variable "availability_zones" {
   default     = null
 }
 
-variable "amount_public_nat-bastion_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 1
+variable "enable_nat_gateway" {
+  description = "Whether to deploy NAT Gateways"
+  type        = bool
+  default     = true
+}
+
+variable "single_nat_gateway" {
+  description = "Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created"
+  type        = bool
+  default     = false # TODO: Set true for similar setup with 1 NATGW as previous module version?
 }
 
 variable "amount_public_lb_subnets" {
@@ -38,17 +49,6 @@ variable "amount_private_management_subnets" {
   default     = 0
 }
 
-variable "name" {
-  description = "Main name for your your VPC, subnets, etc."
-  default     = "production"
-}
-
-variable "number_private_rt" {
-  type        = number
-  description = "The desired number of private route tables. In case we want one per AZ we can change this value."
-  default     = 1
-}
-
 variable "netnum_public_lb" {
   description = "First number of subnet to start of for public_lb subnets"
   default     = "10"
@@ -69,8 +69,8 @@ variable "netnum_private_management" {
   default     = "200"
 }
 
-variable "netnum_public_nat-bastion" {
-  description = "First number of subnet to start of for public_nat-bastion subnets"
+variable "netnum_public_nat" {
+  description = "First number of subnet to start of for public_nat subnets"
   default     = "0"
 }
 

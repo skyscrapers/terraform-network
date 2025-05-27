@@ -2,6 +2,9 @@
 
 Terraform modules networking related vpc,subnets,route tables..
 
+> [!IMPORTANT]
+> These modules are originally designed to be used within Skyscrapers and are tailored mostly to our own needs. They may also be suitable for your own use cases, however in general we recommend using the excellent [terraform-aws-vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) module instead.
+
 - [terraform-network](#terraform-network)
   - [Nat Gateway](#nat-gateway)
     - [Requirements](#requirements)
@@ -43,12 +46,13 @@ Terraform modules networking related vpc,subnets,route tables..
   - [securitygroups/web\_public](#securitygroupsweb_public)
     - [Example](#example-6)
   - [Migration](#migration)
+    - [From v5 to v6](#from-v5-to-v6)
     - [From v4 to v5](#from-v4-to-v5)
     - [From v2 to v3](#from-v2-to-v3)
 
 ## Nat Gateway
 
-Creates a nat gateway and automatically adds a route table to the route tables passed as parameter
+Creates a nat gateway and automatically adds a route to the route tables passed as parameter
 
 ### Requirements
 
@@ -391,6 +395,27 @@ module "securitygroup_web_public" {
 ```
 
 ## Migration
+
+### From v5 to v6
+
+In v6 of this module, we have included creation of NAT Gateways in the `vpc` module itself. This means that you no longer need to use the `nat_gateway` module separately.
+
+Related to this change, we have simplified the inputs for the `vpc` module.
+
+Removed vars:
+
+- amount_public_nat_bastion_subnets: this will be determind by the amount of NAT Gateways to deploy
+- number_private_rt: this will be determind by the amount of NAT Gateways to deploy
+- number_nat_gateways: this is now controlled by the new `enable_nat_gateway` and `single_nat_gateway` variables
+
+New vars:
+
+- enable_nat_gateway (default: true): Whether to deploy NAT Gateways or not
+- single_nat_gateway (default: false): Whether to deploy a single NAT Gateway or one per AZ
+
+Remaned:
+
+- netnum_public_nat-bastion -> netnum_public_nat
 
 ### From v4 to v5
 
