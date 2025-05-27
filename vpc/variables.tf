@@ -86,9 +86,9 @@ variable "extra_tags_vpc" {
   default     = {}
 }
 
-variable "extra_tags_public_nat-bastion" {
+variable "extra_tags_public_nat" {
   type        = map(string)
-  description = "Public nat/bastion subnets extra tags"
+  description = "Public nat subnets extra tags"
   default     = {}
 }
 

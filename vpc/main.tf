@@ -32,7 +32,7 @@ module "public_nat_subnets" {
   route_tables       = aws_route_table.public.*.id
   num_route_tables   = 1
 
-  tags = merge(var.extra_tags_public_nat-bastion, var.tags, {
+  tags = merge(var.extra_tags_public_nat, var.tags, {
     visibility = "public"
     role       = "nat"
   })
@@ -64,7 +64,7 @@ module "private_app_subnets" {
   netnum             = var.netnum_private_app
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = var.number_private_rt
+  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_app, var.tags, {
     visibility = "private"
@@ -81,7 +81,7 @@ module "private_db_subnets" {
   netnum             = var.netnum_private_db
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = var.number_private_rt
+  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_db, var.tags, {
     visibility = "private"
@@ -98,7 +98,7 @@ module "private_management_subnets" {
   netnum             = var.netnum_private_management
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = var.number_private_rt
+  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_management, var.tags, {
     visibility = "private"
