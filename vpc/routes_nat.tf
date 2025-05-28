@@ -45,7 +45,7 @@ resource "aws_nat_gateway" "gateway" {
   count = local.nat_gateway_count
 
   allocation_id = aws_eip.nat_gateway[count.index].id
-  subnet_id     = element(module.public_nat_subnets.*.ids, count.index)
+  subnet_id     = element(module.public_nat_subnets.ids, count.index)
 
   tags = merge(
     var.tags,
