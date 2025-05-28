@@ -105,15 +105,3 @@ module "private_management_subnets" {
     role       = "management"
   })
 }
-
-# Create internet gateway
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
-
-  tags = merge(
-    var.tags,
-    {
-      "Name" = var.name
-    },
-  )
-}
