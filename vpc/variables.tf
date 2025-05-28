@@ -22,7 +22,7 @@ variable "enable_nat_gateway" {
 variable "single_nat_gateway" {
   description = "Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created"
   type        = bool
-  default     = false # TODO: Set true for similar setup with 1 NATGW as previous module version?
+  default     = false
 }
 
 variable "amount_public_lb_subnets" {
