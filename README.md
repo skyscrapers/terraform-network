@@ -8,11 +8,11 @@ Terraform modules networking related vpc,subnets,route tables..
 - [terraform-network](#terraform-network)
   - [vpc](#vpc)
     - [Requirements](#requirements)
-    - [Providers](#providers)
-    - [Modules](#modules)
-    - [Resources](#resources)
-    - [Inputs](#inputs)
-    - [Outputs](#outputs)
+  - [Providers](#providers)
+  - [Modules](#modules)
+  - [Resources](#resources)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
     - [Example](#example)
   - [vpc\_peering](#vpc_peering)
     - [Requirements](#requirements-1)
@@ -28,25 +28,26 @@ Terraform modules networking related vpc,subnets,route tables..
 
 ## vpc
 
-This module will create a vpc with the option to specify 3 types of subnets:
+This module will create a vpc with the option to specify several types of subnets:
 
 - public_lb_subnets
 - private_app_subnets
 - private_db_subnets
+- private_management_subnets
 
-It will also create the required NAT Gateways (in separate public_nat subnets) and route tables for the private subnets. The private_app and private_db subnets are private subnets.
+It will also create the required NAT Gateways (in separate public_nat subnets) and route tables for the private subnets. There's option for either a single NAT gateway or one per Availability Zone (default). The private_app and private_db subnets are private subnets.
 
 ### Requirements
 
 No requirements.
 
-### Providers
+## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
 
-### Modules
+## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
@@ -54,18 +55,23 @@ No requirements.
 | <a name="module_private_db_subnets"></a> [private_db_subnets](#module_private_db_subnets) | ../subnets | n/a |
 | <a name="module_private_management_subnets"></a> [private_management_subnets](#module_private_management_subnets) | ../subnets | n/a |
 | <a name="module_public_lb_subnets"></a> [public_lb_subnets](#module_public_lb_subnets) | ../subnets | n/a |
+| <a name="module_public_nat_subnets"></a> [public_nat_subnets](#module_public_nat_subnets) | ../subnets | n/a |
 
-### Resources
+## Resources
 
 | Name | Type |
 |------|------|
+| [aws_eip.nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_internet_gateway.gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
+| [aws_nat_gateway.gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
+| [aws_route.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
-### Inputs
+## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -75,28 +81,35 @@ No requirements.
 | <a name="input_amount_private_management_subnets"></a> [amount_private_management_subnets](#input_amount_private_management_subnets) | Amount of subnets you need | `number` | `0` | no |
 | <a name="input_amount_public_lb_subnets"></a> [amount_public_lb_subnets](#input_amount_public_lb_subnets) | Amount of subnets you need | `number` | `3` | no |
 | <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | `list(string)` | `null` | no |
+| <a name="input_enable_nat_gateway"></a> [enable_nat_gateway](#input_enable_nat_gateway) | Whether to deploy NAT Gateways | `bool` | `true` | no |
 | <a name="input_extra_tags_private_app"></a> [extra_tags_private_app](#input_extra_tags_private_app) | Private app subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_db"></a> [extra_tags_private_db](#input_extra_tags_private_db) | Private database subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_management"></a> [extra_tags_private_management](#input_extra_tags_private_management) | Private management subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_public_lb"></a> [extra_tags_public_lb](#input_extra_tags_public_lb) | Public load balancer subnets extra tags | `map(string)` | `{}` | no |
+| <a name="input_extra_tags_public_nat"></a> [extra_tags_public_nat](#input_extra_tags_public_nat) | Public nat subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_vpc"></a> [extra_tags_vpc](#input_extra_tags_vpc) | VPC extra tags | `map(string)` | `{}` | no |
 | <a name="input_name"></a> [name](#input_name) | Main name for your your VPC, subnets, etc. | `string` | `"production"` | no |
 | <a name="input_netnum_private_app"></a> [netnum_private_app](#input_netnum_private_app) | First number of subnet to start of for private_app subnets | `string` | `"20"` | no |
 | <a name="input_netnum_private_db"></a> [netnum_private_db](#input_netnum_private_db) | First number of subnet to start of for private_db subnets | `string` | `"30"` | no |
 | <a name="input_netnum_private_management"></a> [netnum_private_management](#input_netnum_private_management) | First number of subnet to start of for private_management subnets | `string` | `"200"` | no |
 | <a name="input_netnum_public_lb"></a> [netnum_public_lb](#input_netnum_public_lb) | First number of subnet to start of for public_lb subnets | `string` | `"10"` | no |
+| <a name="input_netnum_public_nat"></a> [netnum_public_nat](#input_netnum_public_nat) | First number of subnet to start of for public_nat subnets | `string` | `"0"` | no |
+| <a name="input_single_nat_gateway"></a> [single_nat_gateway](#input_single_nat_gateway) | Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input_tags) | Optional Tags | `map(string)` | `{}` | no |
 
-### Outputs
+## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_default_network_acl_id"></a> [default_network_acl_id](#output_default_network_acl_id) | Id of the default network acl |
+| <a name="output_nat_gateway_ids"></a> [nat_gateway_ids](#output_nat_gateway_ids) | n/a |
+| <a name="output_nat_gateway_ips"></a> [nat_gateway_ips](#output_nat_gateway_ips) | n/a |
 | <a name="output_private_app_subnets"></a> [private_app_subnets](#output_private_app_subnets) | List of the private_app subnets id created |
 | <a name="output_private_db_subnets"></a> [private_db_subnets](#output_private_db_subnets) | List of the private_db subnets id created |
 | <a name="output_private_management_subnets"></a> [private_management_subnets](#output_private_management_subnets) | List of the private_management subnets id created |
 | <a name="output_private_rts"></a> [private_rts](#output_private_rts) | List of the ids of the private route tables created |
 | <a name="output_public_lb_subnets"></a> [public_lb_subnets](#output_public_lb_subnets) | List of the public_lb subnets id created |
+| <a name="output_public_nat_subnets"></a> [public_nat_subnets](#output_public_nat_subnets) | List of the public_nat subnets id created |
 | <a name="output_public_rts"></a> [public_rts](#output_public_rts) | List of the ids of the public route tables created |
 | <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id) | The id of the vpc created |
 
@@ -176,7 +189,7 @@ In v6 of this module we have:
 3. renamed the `public_nat-bastion` subnets to `public_nat` subnets
 4. make sure subnet associations are correctly matched to route tables, and NAT gateways, per availability zone
 
-These changes are breaking (updated variables) and will cause network disruption due to subnet re-assosication to route tables.
+These changes are breaking, you need to update variables, and can cause network disruption due to subnet re-assosication to their respective route tables.
 
 Related to this change, we have simplified the inputs for the `vpc` module.
 
