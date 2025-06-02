@@ -169,7 +169,14 @@ No modules.
 
 ### From v5 to v6
 
-In v6 of this module we have removed the `securitygroups` submodules and removed the nat_gateway module. Creation of NAT Gateways is now included in the main `vpc` module itself.
+In v6 of this module we have:
+
+1. removed the `securitygroups` submodules and removed the nat_gateway module
+2. integrated creation of NAT gateways into the main `vpc` module itself
+3. renamed the `public_nat-bastion` subnets to `public_nat` subnets
+4. make sure subnet associations are correctly matched to route tables, and NAT gateways, per availability zone
+
+These changes are breaking (updated variables) and will cause network disruption due to subnet re-assosication to route tables.
 
 Related to this change, we have simplified the inputs for the `vpc` module.
 
