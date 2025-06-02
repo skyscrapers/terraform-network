@@ -35,7 +35,7 @@ resource "aws_subnet" "subnets" {
 }
 
 resource "aws_route_table_association" "subnet_association" {
-  for_each = var.num_route_tables > 0 ? aws_subnet.subnets : {}
+  for_each = var.num_route_tables > 0 ? aws_subnet.subnets : []
 
   # Make sure to use the correct route table based on the AZs
   subnet_id      = each.value["id"]
