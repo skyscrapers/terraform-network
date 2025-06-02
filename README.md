@@ -195,18 +195,37 @@ Related to this change, we have simplified the inputs for the `vpc` module.
 
 Removed vars:
 
-- amount_public_nat_bastion_subnets: this will be determind by the amount of NAT Gateways to deploy
-- number_private_rt: this will be determind by the amount of NAT Gateways to deploy
-- number_nat_gateways: this is now controlled by the new `enable_nat_gateway` and `single_nat_gateway` variables
+- `amount_public_nat_bastion_subnets`: this will be determind by the amount of NAT Gateways to deploy
+- `number_private_rt`: this will be determind by the amount of NAT Gateways to deploy
+- `number_nat_gateways`: this is now controlled by the new `enable_nat_gateway` and `single_nat_gateway` variables
 
 New vars:
 
-- enable_nat_gateway (default: true): Whether to deploy NAT Gateways or not
-- single_nat_gateway (default: false): Whether to deploy a single NAT Gateway or one per AZ
+- `enable_nat_gateway` (default: true): Whether to deploy NAT Gateways or not
+- `single_nat_gateway` (default: false): Whether to deploy a single NAT Gateway or one per AZ
 
 Remaned:
 
-- netnum_public_nat-bastion -> netnum_public_nat
+- `netnum_public_nat-bastion` -> `netnum_public_nat`
+
+If you deployed the `vpc` and `nat_gateway` modules separately, you will need to remove the `nat_gateway` module from your code and update the `vpc` module to use the new `*_nat_gateway` variables. You can use `moved` blocks to migrate the NAT Gateway resources to the new `vpc` module:
+
+```hcl
+moved {
+  from = module.nat_gateway.aws_eip.nat_gateway
+  to   = module.vpc.aws_eip.nat_gateway
+}
+
+moved {
+  from = module.nat_gateway.aws_nat_gateway.gateway
+  to   = module.vpc.aws_nat_gateway.gateway
+}
+
+moved {
+  from = module.nat_gateway.aws_route.r
+  to   = module.vpc.aws_route.private
+}
+```
 
 ### From v4 to v5
 
