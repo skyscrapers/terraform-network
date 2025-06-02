@@ -8,11 +8,11 @@ Terraform modules networking related vpc,subnets,route tables..
 - [terraform-network](#terraform-network)
   - [vpc](#vpc)
     - [Requirements](#requirements)
-  - [Providers](#providers)
-  - [Modules](#modules)
-  - [Resources](#resources)
-  - [Inputs](#inputs)
-  - [Outputs](#outputs)
+    - [Providers](#providers)
+    - [Modules](#modules)
+    - [Resources](#resources)
+    - [Inputs](#inputs)
+    - [Outputs](#outputs)
     - [Example](#example)
   - [vpc\_peering](#vpc_peering)
     - [Requirements](#requirements-1)
@@ -41,13 +41,13 @@ It will also create the required NAT Gateways (in separate public_nat subnets) a
 
 No requirements.
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
 
-## Modules
+### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
@@ -57,7 +57,7 @@ No requirements.
 | <a name="module_public_lb_subnets"></a> [public_lb_subnets](#module_public_lb_subnets) | ../subnets | n/a |
 | <a name="module_public_nat_subnets"></a> [public_nat_subnets](#module_public_nat_subnets) | ../subnets | n/a |
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
@@ -71,7 +71,7 @@ No requirements.
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -97,7 +97,7 @@ No requirements.
 | <a name="input_single_nat_gateway"></a> [single_nat_gateway](#input_single_nat_gateway) | Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input_tags) | Optional Tags | `map(string)` | `{}` | no |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
