@@ -12,8 +12,7 @@ locals {
   availability_zones = var.availability_zones != null ? var.availability_zones : data.aws_availability_zones.available.names
 
   # We expect either a single route table or a route tables per AZ.
-  route_table_per_az = {
-    for rtb in data.aws_route_table.rtbs :
+  route_table_per_az = { for rtb in data.aws_route_table.rtbs :
     try(rtb.tags["AvailabilityZone"], "single") => rtb.id
   }
 }
@@ -35,9 +34,9 @@ resource "aws_subnet" "subnets" {
 }
 
 resource "aws_route_table_association" "subnet_association" {
-  for_each = var.num_route_tables > 0 ? aws_subnet.subnets : []
+  for_each = var.num_route_tables > 0 ? { for subnet in aws_subnet.subnets : subnet.id => subnet.availability_zone } : {}
 
   # Make sure to use the correct route table based on the AZs
-  subnet_id      = each.value["id"]
-  route_table_id = var.num_route_tables > 1 ? local.route_table_per_az[each.value["availability_zone"]] : var.route_tables[0]
+  subnet_id      = each.key
+  route_table_id = var.num_route_tables > 1 ? local.route_table_per_az[each.value] : var.route_tables[0]
 }
