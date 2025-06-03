@@ -8,7 +8,7 @@ variable "cidr_block" {
 }
 
 variable "availability_zones" {
-  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets)"
+  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified. We will create a subnet per specified AZ"
   type        = list(string)
   default     = null
 }
@@ -25,28 +25,28 @@ variable "single_nat_gateway" {
   default     = false
 }
 
-variable "amount_public_lb_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
+variable "enable_public_lb_subnets" {
+  type        = bool
+  description = "Whether to deploy the public 'Load Balancer' subnets"
+  default     = true
 }
 
-variable "amount_private_app_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
+variable "enable_private_app_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'App' subnets"
+  default     = true
 }
 
-variable "amount_private_db_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
+variable "enable_private_db_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'Database' subnets"
+  default     = true
 }
 
-variable "amount_private_management_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 0
+variable "enable_private_management_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'Management' subnets"
+  default     = false
 }
 
 variable "netnum_public_lb" {

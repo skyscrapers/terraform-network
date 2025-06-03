@@ -4,9 +4,8 @@ variable "cidr" {
 }
 
 variable "availability_zones" {
-  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets)"
+  description = "List of AZs to use for the subnets. We will create a subnet per specified AZ"
   type        = list(string)
-  default     = null
 }
 
 variable "newbits" {
@@ -37,22 +36,9 @@ variable "name" {
   type        = string
 }
 
-variable "num_subnets" {
-  description = "Amount of subnets to create"
-  type        = number
-  default     = 3
-}
-
 variable "route_tables" {
-  description = "Route tables to attach the subnets to"
+  description = "Route table IDs to attach the subnets to"
   type        = list(string)
-  default     = []
-}
-
-variable "num_route_tables" {
-  description = "Amount of route tables to attach the subnets to"
-  type        = number
-  default     = 0
 }
 
 variable "map_public_ip_on_launch" {

@@ -1,5 +1,6 @@
 locals {
-  availability_zones = coalescelist(var.availability_zones, data.aws_availability_zones.available.names)
+  # Either use the specified AZ list or fall back to the available AZs. We will use a maximum of 3 AZs.
+  availability_zones = slice(coalescelist(var.availability_zones, data.aws_availability_zones.available.names), 0, 3)
   nat_gateway_count  = var.single_nat_gateway ? 1 : length(local.availability_zones)
 }
 
@@ -24,13 +25,11 @@ resource "aws_vpc" "main" {
 module "public_nat_subnets" {
   source             = "../subnets"
   name               = "${var.name}-public-nat"
-  availability_zones = local.availability_zones
-  num_subnets        = local.nat_gateway_count
+  availability_zones = slice(local.availability_zones, 0, local.nat_gateway_count)
   cidr               = var.cidr_block
   netnum             = var.netnum_public_nat
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.public.*.id
-  num_route_tables   = 1
 
   tags = merge(var.extra_tags_public_nat, var.tags, {
     visibility = "public"
@@ -41,13 +40,11 @@ module "public_nat_subnets" {
 module "public_lb_subnets" {
   source             = "../subnets"
   name               = "${var.name}-public-lb"
-  availability_zones = local.availability_zones
-  num_subnets        = var.amount_public_lb_subnets
+  availability_zones = var.enable_public_lb_subnets ? local.availability_zones : []
   cidr               = var.cidr_block
   netnum             = var.netnum_public_lb
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.public.*.id
-  num_route_tables   = 1
 
   tags = merge(var.extra_tags_public_lb, var.tags, {
     visibility = "public"
@@ -58,13 +55,11 @@ module "public_lb_subnets" {
 module "private_app_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-app"
-  availability_zones = local.availability_zones
-  num_subnets        = var.amount_private_app_subnets
+  availability_zones = var.enable_private_app_subnets ? local.availability_zones : []
   cidr               = var.cidr_block
   netnum             = var.netnum_private_app
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_app, var.tags, {
     visibility = "private"
@@ -75,13 +70,11 @@ module "private_app_subnets" {
 module "private_db_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-db"
-  availability_zones = local.availability_zones
-  num_subnets        = var.amount_private_db_subnets
+  availability_zones = var.enable_private_db_subnets ? local.availability_zones : []
   cidr               = var.cidr_block
   netnum             = var.netnum_private_db
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_db, var.tags, {
     visibility = "private"
@@ -92,13 +85,11 @@ module "private_db_subnets" {
 module "private_management_subnets" {
   source             = "../subnets"
   name               = "${var.name}-private-management"
-  availability_zones = local.availability_zones
-  num_subnets        = var.amount_private_management_subnets
+  availability_zones = var.enable_private_management_subnets ? local.availability_zones : []
   cidr               = var.cidr_block
   netnum             = var.netnum_private_management
   vpc_id             = aws_vpc.main.id
   route_tables       = aws_route_table.private.*.id
-  num_route_tables   = local.nat_gateway_count
 
   tags = merge(var.extra_tags_private_management, var.tags, {
     visibility = "private"
