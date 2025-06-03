@@ -1,7 +1,7 @@
 locals {
   # Either use the specified AZ list or fall back to the available AZs. We will use a maximum of 3 AZs.
   availability_zones = slice(coalescelist(var.availability_zones, data.aws_availability_zones.available.names), 0, 3)
-  nat_gateway_count  = var.single_nat_gateway ? 1 : length(local.availability_zones)
+  nat_gateway_count  = var.enable_nat_gateway ? var.single_nat_gateway ? 1 : length(local.availability_zones) : 0
 }
 
 data "aws_availability_zones" "available" {

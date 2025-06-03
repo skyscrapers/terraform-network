@@ -187,9 +187,7 @@ In v6 of this module we have:
 1. removed the `securitygroups` submodules and removed the nat_gateway module
 2. integrated creation of NAT gateways into the main `vpc` module itself
 3. renamed the `public_nat-bastion` subnets to `public_nat` subnets
-4. make sure subnet associations are correctly matched to route tables, and NAT gateways, per availability zone
-
-These changes are breaking, you need to update variables, and can cause network disruption due to subnet re-assosication to their respective route tables.
+4. removed the `amount_*_subnets` variables and instead determine the amount of subents per group based on the Availability Zones
 
 Related to this change, we have simplified the inputs for the `vpc` module.
 
@@ -198,11 +196,19 @@ Removed vars:
 - `amount_public_nat_bastion_subnets`: this will be determind by the amount of NAT Gateways to deploy
 - `number_private_rt`: this will be determind by the amount of NAT Gateways to deploy
 - `number_nat_gateways`: this is now controlled by the new `enable_nat_gateway` and `single_nat_gateway` variables
+- `amount_public_lb_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_app_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_db_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_management_subnets`: this will be determind by the amount of Availability Zones
 
 New vars:
 
-- `enable_nat_gateway` (default: true): Whether to deploy NAT Gateways or not
+- `enable_nat_gateway` (default: true): Whether to deploy NAT Gateways
 - `single_nat_gateway` (default: false): Whether to deploy a single NAT Gateway or one per AZ
+- `enable_public_lb_subnets` (default: true): Whether to deploy public LB subnets
+- `enable_private_app_subnets` (default: true): Whether to deploy private app subnets
+- `enable_private_db_subnets` (default: true): Whether to deploy private DB subnets
+- `enable_private_management_subnets` (default: false): Whether to deploy private management subnets
 
 Remaned:
 
