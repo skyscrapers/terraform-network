@@ -69,19 +69,18 @@ No requirements.
 | [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. In general we recommend specifying 3 AZs | `list(string)` | n/a | yes |
 | <a name="input_cidr_block"></a> [cidr_block](#input_cidr_block) | CIDR block you want to have in your VPC | `any` | n/a | yes |
-| <a name="input_amount_private_app_subnets"></a> [amount_private_app_subnets](#input_amount_private_app_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_amount_private_db_subnets"></a> [amount_private_db_subnets](#input_amount_private_db_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_amount_private_management_subnets"></a> [amount_private_management_subnets](#input_amount_private_management_subnets) | Amount of subnets you need | `number` | `0` | no |
-| <a name="input_amount_public_lb_subnets"></a> [amount_public_lb_subnets](#input_amount_public_lb_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | `list(string)` | `null` | no |
 | <a name="input_enable_nat_gateway"></a> [enable_nat_gateway](#input_enable_nat_gateway) | Whether to deploy NAT Gateways | `bool` | `true` | no |
+| <a name="input_enable_private_app_subnets"></a> [enable_private_app_subnets](#input_enable_private_app_subnets) | Whether to deploy private 'App' subnets | `bool` | `true` | no |
+| <a name="input_enable_private_db_subnets"></a> [enable_private_db_subnets](#input_enable_private_db_subnets) | Whether to deploy private 'Database' subnets | `bool` | `true` | no |
+| <a name="input_enable_private_management_subnets"></a> [enable_private_management_subnets](#input_enable_private_management_subnets) | Whether to deploy private 'Management' subnets | `bool` | `false` | no |
+| <a name="input_enable_public_lb_subnets"></a> [enable_public_lb_subnets](#input_enable_public_lb_subnets) | Whether to deploy the public 'Load Balancer' subnets | `bool` | `true` | no |
 | <a name="input_extra_tags_private_app"></a> [extra_tags_private_app](#input_extra_tags_private_app) | Private app subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_db"></a> [extra_tags_private_db](#input_extra_tags_private_db) | Private database subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_management"></a> [extra_tags_private_management](#input_extra_tags_private_management) | Private management subnets extra tags | `map(string)` | `{}` | no |
@@ -116,11 +115,22 @@ No requirements.
 ### Example
 
 ```hcl
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "vpc" {
-  source     = "vpc"
-  cidr_block = "172.16.0.0/16"
-  name       = "test"
-  tags       = { "KubernetesCluster" = "test" }
+  source             = "github.com/skyscrapers/terraform-network//vpc?ref=6.0.0"
+
+  cidr_block         = "172.16.0.0/16"
+  name               = "test"
+  availability_zones = slice(data.aws_availability_zones.available.names, 0, 3)
+  enable_nat_gateway = true
+  single_nat_gateway = false
+
+  extra_tags_public_lb = {
+    "kubernetes.io/role/elb" = "1"
+  }
 }
 ```
 
