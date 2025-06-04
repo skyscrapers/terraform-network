@@ -6,13 +6,10 @@ resource "aws_subnet" "subnets" {
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = var.map_public_ip_on_launch
 
-  tags = merge(
-    var.tags,
-    {
-      "Name"             = "${var.name}-${var.availability_zones[count.index]}"
-      "AvailabilityZone" = var.availability_zones[count.index]
-    },
-  )
+  tags = merge(var.tags, {
+    "Name"             = "${var.name}-${var.availability_zones[count.index]}"
+    "AvailabilityZone" = var.availability_zones[count.index]
+  })
 }
 
 resource "aws_route_table_association" "subnet_association" {

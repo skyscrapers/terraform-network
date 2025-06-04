@@ -3,23 +3,17 @@
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = var.name
-    },
-  )
+  tags = merge(var.tags, {
+    "Name" = var.name
+  })
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = "${var.name}-public"
-    },
-  )
+  tags = merge(var.tags, {
+    "Name" = "${var.name}-public"
+  })
 }
 
 resource "aws_route" "public" {
@@ -34,13 +28,10 @@ resource "aws_eip" "nat_gateway" {
   count  = local.nat_gateway_count
   domain = "vpc"
 
-  tags = merge(
-    var.tags,
-    {
-      "Name"             = "${var.name}-natgw-${module.public_nat_subnets.azs[count.index]}"
-      "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
-    }
-  )
+  tags = merge(var.tags, {
+    "Name"             = "${var.name}-natgw-${module.public_nat_subnets.azs[count.index]}"
+    "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
+  })
 }
 
 resource "aws_nat_gateway" "gateway" {
@@ -49,13 +40,10 @@ resource "aws_nat_gateway" "gateway" {
   allocation_id = aws_eip.nat_gateway[count.index].id
   subnet_id     = module.public_nat_subnets.ids[count.index]
 
-  tags = merge(
-    var.tags,
-    {
-      "Name"             = "${var.name}-${module.public_nat_subnets.azs[count.index]}"
-      "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
-    }
-  )
+  tags = merge(var.tags, {
+    "Name"             = "${var.name}-${module.public_nat_subnets.azs[count.index]}"
+    "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
+  })
 }
 
 resource "aws_route_table" "private" {
@@ -63,15 +51,11 @@ resource "aws_route_table" "private" {
   count  = local.nat_gateway_count > 0 ? local.nat_gateway_count : 1
   vpc_id = aws_vpc.main.id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = local.nat_gateway_count > 1 ? "${var.name}-private-${module.public_nat_subnets.azs[count.index]}" : "${var.name}-private"
-    },
-    local.nat_gateway_count <= 1 ? {} : {
-      "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
-    }
-  )
+  tags = merge(var.tags, {
+    "Name" = local.nat_gateway_count > 1 ? "${var.name}-private-${module.public_nat_subnets.azs[count.index]}" : "${var.name}-private"
+    }, local.nat_gateway_count <= 1 ? {} : {
+    "AvailabilityZone" = module.public_nat_subnets.azs[count.index]
+  })
 }
 
 resource "aws_route" "private" {

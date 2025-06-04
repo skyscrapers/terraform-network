@@ -8,9 +8,8 @@ variable "cidr_block" {
 }
 
 variable "availability_zones" {
-  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified. We will create a subnet per specified AZ"
+  description = "List of AZs to use for the subnets. In general we recommend specifying 3 AZs"
   type        = list(string)
-  default     = null
 }
 
 variable "enable_nat_gateway" {

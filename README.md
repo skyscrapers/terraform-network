@@ -182,12 +182,12 @@ No modules.
 
 ### From v5 to v6
 
-In v6 of this module we have:
+In v6 of this module we have made several changes to simplify the VPC module and its usage. The main changes are:
 
 1. removed the `securitygroups` submodules and removed the nat_gateway module
-2. integrated creation of NAT gateways into the main `vpc` module itself
-3. renamed the `public_nat-bastion` subnets to `public_nat` subnets
-4. removed the `amount_*_subnets` variables and instead determine the amount of subents per group based on the Availability Zones
+2. required to specify `availability_zones` and removed `amount_*_subnets` variables. This will be used to determine the amount of subnets to create for each group, so you can no longer specify the amount of subnets per group directly. It also determines several other things, most importantly the amount of NAT Gateways to deploy
+3. integrated creation of NAT gateways into the main `vpc` module itself
+4. renamed the `public_nat-bastion` subnets to `public_nat` subnets
 
 Related to this change, we have simplified the inputs for the `vpc` module.
 
