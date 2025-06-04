@@ -3,9 +3,9 @@ output "vpc_id" {
   value       = aws_vpc.main.id
 }
 
-output "public_nat-bastion" {
-  description = "List of the public_nat-bastion subnets id created"
-  value       = module.public_nat-bastion_subnets.ids
+output "public_nat_subnets" {
+  description = "List of the public_nat subnets id created"
+  value       = module.public_nat_subnets.ids
 }
 
 output "public_lb_subnets" {
@@ -41,4 +41,12 @@ output "public_rts" {
 output "default_network_acl_id" {
   description = "Id of the default network acl"
   value       = aws_vpc.main.default_network_acl_id
+}
+
+output "nat_gateway_ids" {
+  value = aws_nat_gateway.gateway.*.id
+}
+
+output "nat_gateway_ips" {
+  value = aws_eip.nat_gateway.*.public_ip
 }

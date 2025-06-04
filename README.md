@@ -2,8 +2,11 @@
 
 Terraform modules networking related vpc,subnets,route tables..
 
+> [!IMPORTANT]
+> These modules are originally designed to be used within Skyscrapers and are tailored mostly to our own needs. They may also be suitable for your own use cases, however in general we recommend using the excellent [terraform-aws-vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) module instead.
+
 - [terraform-network](#terraform-network)
-  - [Nat Gateway](#nat-gateway)
+  - [vpc](#vpc)
     - [Requirements](#requirements)
     - [Providers](#providers)
     - [Modules](#modules)
@@ -11,176 +14,28 @@ Terraform modules networking related vpc,subnets,route tables..
     - [Inputs](#inputs)
     - [Outputs](#outputs)
     - [Example](#example)
-  - [Subnets](#subnets)
-  - [Requirements](#requirements-1)
-  - [Providers](#providers-1)
-  - [Modules](#modules-1)
-  - [Resources](#resources-1)
-  - [Inputs](#inputs-1)
-  - [Outputs](#outputs-1)
-    - [Example](#example-1)
-  - [vpc](#vpc)
-    - [Requirements](#requirements-2)
-    - [Providers](#providers-2)
-    - [Modules](#modules-2)
-    - [Resources](#resources-2)
-    - [Inputs](#inputs-2)
-    - [Outputs](#outputs-2)
-    - [Example](#example-2)
   - [vpc\_peering](#vpc_peering)
-    - [Requirements](#requirements-3)
-    - [Providers](#providers-3)
-    - [Modules](#modules-3)
-    - [Resources](#resources-3)
-    - [Inputs](#inputs-3)
-    - [Outputs](#outputs-3)
-  - [securitygroups/all](#securitygroupsall)
-    - [Example](#example-3)
-  - [securitygroups/icinga\_satellite](#securitygroupsicinga_satellite)
-    - [Example](#example-4)
-  - [securitygroups/puppet](#securitygroupspuppet)
-    - [Example](#example-5)
-  - [securitygroups/web\_public](#securitygroupsweb_public)
-    - [Example](#example-6)
-  - [Migration](#migration)
+    - [Requirements](#requirements-1)
+    - [Providers](#providers-1)
+    - [Modules](#modules-1)
+    - [Resources](#resources-1)
+    - [Inputs](#inputs-1)
+    - [Outputs](#outputs-1)
+  - [Breaking changes and migration](#breaking-changes-and-migration)
+    - [From v5 to v6](#from-v5-to-v6)
     - [From v4 to v5](#from-v4-to-v5)
     - [From v2 to v3](#from-v2-to-v3)
 
-## Nat Gateway
-
-Creates a nat gateway and automatically adds a route table to the route tables passed as parameter
-
-### Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
-
-### Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
-
-### Modules
-
-No modules.
-
-### Resources
-
-| Name | Type |
-|------|------|
-| [aws_eip.nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
-| [aws_nat_gateway.gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
-| [aws_route.r](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
-| [aws_subnet.ngw_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-
-### Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_private_route_tables"></a> [private_route_tables](#input_private_route_tables) | n/a | `list(string)` | n/a | yes |
-| <a name="input_public_subnets"></a> [public_subnets](#input_public_subnets) | n/a | `list(string)` | n/a | yes |
-| <a name="input_number_nat_gateways"></a> [number_nat_gateways](#input_number_nat_gateways) | n/a | `number` | `1` | no |
-| <a name="input_tags"></a> [tags](#input_tags) | Optional extra tags | `map(string)` | `{}` | no |
-
-### Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_ids"></a> [ids](#output_ids) | n/a |
-| <a name="output_ips"></a> [ips](#output_ips) | n/a |
-
-### Example
-
-```hcl
-module "nat_gateway" {
-  source               = "nat_gateway"
-  private_route_tables = module.vpc.private_rts
-  public_subnets       = module.vpc.public_subnets
-}
-```
-
-## Subnets
-
-Creates a number of subnets and divides them in different parts based on the input params
-
-## Requirements
-
-No requirements.
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
-
-## Modules
-
-No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_route_table_association.subnet_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_subnet.subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_cidr"></a> [cidr](#input_cidr) | CIDR block you use in your VPC | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input_name) | Name | `string` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc_id](#input_vpc_id) | ID of the VPC where we want to deploy the subnet | `string` | n/a | yes |
-| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | `list(string)` | `null` | no |
-| <a name="input_map_public_ip_on_launch"></a> [map_public_ip_on_launch](#input_map_public_ip_on_launch) | Specify true to indicate that instances launched into the subnets should be assigned a public IP address | `bool` | `false` | no |
-| <a name="input_netnum"></a> [netnum](#input_netnum) | Netnum to use for generating the EKS worker subnets. For more information, see the [cidrsubnet function docs](https://www.terraform.io/docs/configuration/functions/cidrsubnet.html) | `number` | `0` | no |
-| <a name="input_newbits"></a> [newbits](#input_newbits) | Newbits to use for generating the subnets. For more information, see the [cidrsubnet function docs](https://www.terraform.io/docs/configuration/functions/cidrsubnet.html) | `number` | `8` | no |
-| <a name="input_num_route_tables"></a> [num_route_tables](#input_num_route_tables) | Amount of route tables to attach the subnets to | `number` | `0` | no |
-| <a name="input_num_subnets"></a> [num_subnets](#input_num_subnets) | Amount of subnets to create | `number` | `3` | no |
-| <a name="input_route_tables"></a> [route_tables](#input_route_tables) | Route tables to attach the subnets to | `list(string)` | `[]` | no |
-| <a name="input_tags"></a> [tags](#input_tags) | Optional Tags | `map(string)` | `{}` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_ids"></a> [ids](#output_ids) | n/a |
-
-### Example
-
-```hcl
-module "public_lb_subnets" {
-  source      = "../subnets"
-  name        = "test-public-lb"
-  num_subnets = var.amount_public_lb_subnets
-  visibility  = "public"
-  role        = "lb"
-  cidr        = var.cidr_block
-  netnum      = 0
-  vpc_id      = aws_vpc.main.id
-  aws_region  = var.aws_region
-
-  tags = {
-    visibility        = "public"
-    role              = "lb"
-    KubernetesCluster = "test"
-  }
-}
-```
-
 ## vpc
 
-This module will create a vpc with the option to specify 4 types of subnets:
+This module will create a vpc with the option to specify several types of subnets:
 
-* public_nat-bastion_subnets
-* public_lb_subnets
-* private_app_subnets
-* private_db_subnets
+- public_lb_subnets
+- private_app_subnets
+- private_db_subnets
+- private_management_subnets
 
-It will also create the required route tables for the private subnets. The private_app and private_db subnets are private subnets.
+It will also create the required NAT Gateways (in separate public_nat subnets) and route tables for the private subnets. There's option for either a single NAT gateway or one per Availability Zone (default). The private_app and private_db subnets are private subnets.
 
 ### Requirements
 
@@ -200,13 +55,16 @@ No requirements.
 | <a name="module_private_db_subnets"></a> [private_db_subnets](#module_private_db_subnets) | ../subnets | n/a |
 | <a name="module_private_management_subnets"></a> [private_management_subnets](#module_private_management_subnets) | ../subnets | n/a |
 | <a name="module_public_lb_subnets"></a> [public_lb_subnets](#module_public_lb_subnets) | ../subnets | n/a |
-| <a name="module_public_nat-bastion_subnets"></a> [public_nat-bastion_subnets](#module_public_nat-bastion_subnets) | ../subnets | n/a |
+| <a name="module_public_nat_subnets"></a> [public_nat_subnets](#module_public_nat_subnets) | ../subnets | n/a |
 
 ### Resources
 
 | Name | Type |
 |------|------|
+| [aws_eip.nat_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_internet_gateway.gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
+| [aws_nat_gateway.gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
+| [aws_route.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
@@ -216,26 +74,26 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. In general we recommend specifying 3 AZs | `list(string)` | n/a | yes |
 | <a name="input_cidr_block"></a> [cidr_block](#input_cidr_block) | CIDR block you want to have in your VPC | `any` | n/a | yes |
-| <a name="input_amount_private_app_subnets"></a> [amount_private_app_subnets](#input_amount_private_app_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_amount_private_db_subnets"></a> [amount_private_db_subnets](#input_amount_private_db_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_amount_private_management_subnets"></a> [amount_private_management_subnets](#input_amount_private_management_subnets) | Amount of subnets you need | `number` | `0` | no |
-| <a name="input_amount_public_lb_subnets"></a> [amount_public_lb_subnets](#input_amount_public_lb_subnets) | Amount of subnets you need | `number` | `3` | no |
-| <a name="input_amount_public_nat-bastion_subnets"></a> [amount_public_nat-bastion_subnets](#input_amount_public_nat-bastion_subnets) | Amount of subnets you need | `number` | `1` | no |
-| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets) | `list(string)` | `null` | no |
+| <a name="input_enable_nat_gateway"></a> [enable_nat_gateway](#input_enable_nat_gateway) | Whether to deploy NAT Gateways | `bool` | `true` | no |
+| <a name="input_enable_private_app_subnets"></a> [enable_private_app_subnets](#input_enable_private_app_subnets) | Whether to deploy private 'App' subnets | `bool` | `true` | no |
+| <a name="input_enable_private_db_subnets"></a> [enable_private_db_subnets](#input_enable_private_db_subnets) | Whether to deploy private 'Database' subnets | `bool` | `true` | no |
+| <a name="input_enable_private_management_subnets"></a> [enable_private_management_subnets](#input_enable_private_management_subnets) | Whether to deploy private 'Management' subnets | `bool` | `false` | no |
+| <a name="input_enable_public_lb_subnets"></a> [enable_public_lb_subnets](#input_enable_public_lb_subnets) | Whether to deploy the public 'Load Balancer' subnets | `bool` | `true` | no |
 | <a name="input_extra_tags_private_app"></a> [extra_tags_private_app](#input_extra_tags_private_app) | Private app subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_db"></a> [extra_tags_private_db](#input_extra_tags_private_db) | Private database subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_private_management"></a> [extra_tags_private_management](#input_extra_tags_private_management) | Private management subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_public_lb"></a> [extra_tags_public_lb](#input_extra_tags_public_lb) | Public load balancer subnets extra tags | `map(string)` | `{}` | no |
-| <a name="input_extra_tags_public_nat-bastion"></a> [extra_tags_public_nat-bastion](#input_extra_tags_public_nat-bastion) | Public nat/bastion subnets extra tags | `map(string)` | `{}` | no |
+| <a name="input_extra_tags_public_nat"></a> [extra_tags_public_nat](#input_extra_tags_public_nat) | Public nat subnets extra tags | `map(string)` | `{}` | no |
 | <a name="input_extra_tags_vpc"></a> [extra_tags_vpc](#input_extra_tags_vpc) | VPC extra tags | `map(string)` | `{}` | no |
 | <a name="input_name"></a> [name](#input_name) | Main name for your your VPC, subnets, etc. | `string` | `"production"` | no |
 | <a name="input_netnum_private_app"></a> [netnum_private_app](#input_netnum_private_app) | First number of subnet to start of for private_app subnets | `string` | `"20"` | no |
 | <a name="input_netnum_private_db"></a> [netnum_private_db](#input_netnum_private_db) | First number of subnet to start of for private_db subnets | `string` | `"30"` | no |
 | <a name="input_netnum_private_management"></a> [netnum_private_management](#input_netnum_private_management) | First number of subnet to start of for private_management subnets | `string` | `"200"` | no |
 | <a name="input_netnum_public_lb"></a> [netnum_public_lb](#input_netnum_public_lb) | First number of subnet to start of for public_lb subnets | `string` | `"10"` | no |
-| <a name="input_netnum_public_nat-bastion"></a> [netnum_public_nat-bastion](#input_netnum_public_nat-bastion) | First number of subnet to start of for public_nat-bastion subnets | `string` | `"0"` | no |
-| <a name="input_number_private_rt"></a> [number_private_rt](#input_number_private_rt) | The desired number of private route tables. In case we want one per AZ we can change this value. | `number` | `1` | no |
+| <a name="input_netnum_public_nat"></a> [netnum_public_nat](#input_netnum_public_nat) | First number of subnet to start of for public_nat subnets | `string` | `"0"` | no |
+| <a name="input_single_nat_gateway"></a> [single_nat_gateway](#input_single_nat_gateway) | Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input_tags) | Optional Tags | `map(string)` | `{}` | no |
 
 ### Outputs
@@ -243,23 +101,36 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_default_network_acl_id"></a> [default_network_acl_id](#output_default_network_acl_id) | Id of the default network acl |
+| <a name="output_nat_gateway_ids"></a> [nat_gateway_ids](#output_nat_gateway_ids) | n/a |
+| <a name="output_nat_gateway_ips"></a> [nat_gateway_ips](#output_nat_gateway_ips) | n/a |
 | <a name="output_private_app_subnets"></a> [private_app_subnets](#output_private_app_subnets) | List of the private_app subnets id created |
 | <a name="output_private_db_subnets"></a> [private_db_subnets](#output_private_db_subnets) | List of the private_db subnets id created |
 | <a name="output_private_management_subnets"></a> [private_management_subnets](#output_private_management_subnets) | List of the private_management subnets id created |
 | <a name="output_private_rts"></a> [private_rts](#output_private_rts) | List of the ids of the private route tables created |
 | <a name="output_public_lb_subnets"></a> [public_lb_subnets](#output_public_lb_subnets) | List of the public_lb subnets id created |
-| <a name="output_public_nat-bastion"></a> [public_nat-bastion](#output_public_nat-bastion) | List of the public_nat-bastion subnets id created |
+| <a name="output_public_nat_subnets"></a> [public_nat_subnets](#output_public_nat_subnets) | List of the public_nat subnets id created |
 | <a name="output_public_rts"></a> [public_rts](#output_public_rts) | List of the ids of the public route tables created |
 | <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id) | The id of the vpc created |
 
 ### Example
 
 ```hcl
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "vpc" {
-  source     = "vpc"
-  cidr_block = "172.16.0.0/16"
-  name       = "test"
-  tags       = { "KubernetesCluster" = "test" }
+  source             = "github.com/skyscrapers/terraform-network//vpc?ref=6.0.0"
+
+  cidr_block         = "172.16.0.0/16"
+  name               = "test"
+  availability_zones = slice(data.aws_availability_zones.available.names, 0, 3)
+  enable_nat_gateway = true
+  single_nat_gateway = false
+
+  extra_tags_public_lb = {
+    "kubernetes.io/role/elb" = "1"
+  }
 }
 ```
 
@@ -317,80 +188,60 @@ No modules.
 |------|-------------|
 | <a name="output_vpc_peering_id"></a> [vpc_peering_id](#output_vpc_peering_id) | ID of the VPC peering connection |
 
-## securitygroups/all
+## Breaking changes and migration
 
-This module creates and exposes a reusable security group called `sg-all`.
+### From v5 to v6
 
-The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
-to make the creation and adaptation of security groups much more modular.
+In v6 of this module we have made several changes to simplify the VPC module and its usage. The main changes are:
 
-### Example
+1. removed the `securitygroups` submodules and removed the nat_gateway module
+2. required to specify `availability_zones` and removed `amount_*_subnets` variables. This will be used to determine the amount of subnets to create for each group, so you can no longer specify the amount of subnets per group directly. It also determines several other things, most importantly the amount of NAT Gateways to deploy
+3. integrated creation of NAT gateways into the main `vpc` module itself
+4. renamed the `public_nat-bastion` subnets to `public_nat` subnets
 
-```hcl
-module "securitygroup_all" {
-  source = "github.com/skyscrapers/terraform-network//securitygroups/all"
-  vpc_id = module.vpc.vpc_id
-  name   = "sg_all"
-}
-```
+Related to this change, we have simplified the inputs for the `vpc` module.
 
-## securitygroups/icinga_satellite
+Removed vars:
 
-This module creates and exposes a reusable security group called `sg_icinga_satellite`, expanded
-with project and environment info.
+- `amount_public_nat_bastion_subnets`: this will be determind by the amount of NAT Gateways to deploy
+- `number_private_rt`: this will be determind by the amount of NAT Gateways to deploy
+- `number_nat_gateways`: this is now controlled by the new `enable_nat_gateway` and `single_nat_gateway` variables
+- `amount_public_lb_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_app_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_db_subnets`: this will be determind by the amount of Availability Zones
+- `amount_private_management_subnets`: this will be determind by the amount of Availability Zones
 
-The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
-to make the creation and adaptation of security groups much more modular.
+New vars:
 
-### Example
+- `enable_nat_gateway` (default: true): Whether to deploy NAT Gateways
+- `single_nat_gateway` (default: false): Whether to deploy a single NAT Gateway or one per AZ
+- `enable_public_lb_subnets` (default: true): Whether to deploy public LB subnets
+- `enable_private_app_subnets` (default: true): Whether to deploy private app subnets
+- `enable_private_db_subnets` (default: true): Whether to deploy private DB subnets
+- `enable_private_management_subnets` (default: false): Whether to deploy private management subnets
 
-```hcl
-module "securitygroup_icinga" {
-  source           = "github.com/skyscrapers/terraform-network//securitygroups/icinga_satellite"
-  vpc_id           = module.vpc.vpc_id
-  name             = "sg_icinga_satellite"
-  icinga_master_ip = "123.234.123.234/32"
-}
-```
+Remaned:
 
-## securitygroups/puppet
+- `netnum_public_nat-bastion` -> `netnum_public_nat`
 
-This module creates and exposes a reusable security group called `sg_puppet`, expanded
-with project and environment info.
-
-The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
-to make the creation and adaptation of security groups much more modular.
-
-### Example
+If you deployed the `vpc` and `nat_gateway` modules separately, you will need to remove the `nat_gateway` module from your code and update the `vpc` module to use the new `*_nat_gateway` variables. You can use `moved` blocks to migrate the NAT Gateway resources to the new `vpc` module:
 
 ```hcl
-module "securitygroup_icinga" {
-  source           = "github.com/skyscrapers/terraform-network//securitygroups/puppet"
-  vpc_id           = module.vpc.vpc_id
-  name             = "sg_puppet"
-  puppet_master_ip = "123.234.123.234/32"
+moved {
+  from = module.nat_gateway.aws_eip.nat_gateway
+  to   = module.vpc.aws_eip.nat_gateway
+}
+
+moved {
+  from = module.nat_gateway.aws_nat_gateway.gateway
+  to   = module.vpc.aws_nat_gateway.gateway
+}
+
+moved {
+  from = module.nat_gateway.aws_route.r
+  to   = module.vpc.aws_route.private
 }
 ```
-
-## securitygroups/web_public
-
-This module creates and exposes a reusable security group called `sg_web_public`, expanded
-with project and environment info.
-
-The implementation uses the separate `aws_security_group` and `aws_security_group_rule` resources
-to make the creation and adaptation of security groups much more modular.
-
-### Example
-
-```hcl
-module "securitygroup_web_public" {
-  source = "github.com/skyscrapers/terraform-network//securitygroups/web_public"
-  vpc_id = module.vpc.vpc_id
-  name   = "sg_web_public"
-}
-```
-
-## Migration
 
 ### From v4 to v5
 

@@ -1,52 +1,51 @@
-variable "cidr_block" {
-  description = "CIDR block you want to have in your VPC"
-}
-
-variable "availability_zones" {
-  description = "List of AZs to use for the subnets. Defaults to all available AZs when not specified (looped over sequentially for the amount of subnets)"
-  type        = list(string)
-  default     = null
-}
-
-variable "amount_public_nat-bastion_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 1
-}
-
-variable "amount_public_lb_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
-}
-
-variable "amount_private_app_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
-}
-
-variable "amount_private_db_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 3
-}
-
-variable "amount_private_management_subnets" {
-  type        = number
-  description = "Amount of subnets you need"
-  default     = 0
-}
-
 variable "name" {
   description = "Main name for your your VPC, subnets, etc."
   default     = "production"
 }
 
-variable "number_private_rt" {
-  type        = number
-  description = "The desired number of private route tables. In case we want one per AZ we can change this value."
-  default     = 1
+variable "cidr_block" {
+  description = "CIDR block you want to have in your VPC"
+}
+
+variable "availability_zones" {
+  description = "List of AZs to use for the subnets. In general we recommend specifying 3 AZs"
+  type        = list(string)
+}
+
+variable "enable_nat_gateway" {
+  description = "Whether to deploy NAT Gateways"
+  type        = bool
+  default     = true
+}
+
+variable "single_nat_gateway" {
+  description = "Whether to use a single NAT Gateway or one per enabled Availability Zone. The number of NAT Gateways also determines the number of private route tables created"
+  type        = bool
+  default     = false
+}
+
+variable "enable_public_lb_subnets" {
+  type        = bool
+  description = "Whether to deploy the public 'Load Balancer' subnets"
+  default     = true
+}
+
+variable "enable_private_app_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'App' subnets"
+  default     = true
+}
+
+variable "enable_private_db_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'Database' subnets"
+  default     = true
+}
+
+variable "enable_private_management_subnets" {
+  type        = bool
+  description = "Whether to deploy private 'Management' subnets"
+  default     = false
 }
 
 variable "netnum_public_lb" {
@@ -69,8 +68,8 @@ variable "netnum_private_management" {
   default     = "200"
 }
 
-variable "netnum_public_nat-bastion" {
-  description = "First number of subnet to start of for public_nat-bastion subnets"
+variable "netnum_public_nat" {
+  description = "First number of subnet to start of for public_nat subnets"
   default     = "0"
 }
 
@@ -86,9 +85,9 @@ variable "extra_tags_vpc" {
   default     = {}
 }
 
-variable "extra_tags_public_nat-bastion" {
+variable "extra_tags_public_nat" {
   type        = map(string)
-  description = "Public nat/bastion subnets extra tags"
+  description = "Public nat subnets extra tags"
   default     = {}
 }
 
